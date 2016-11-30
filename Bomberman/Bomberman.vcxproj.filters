@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{e2031e21-8a8c-4827-a2a4-3806901976da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Header files">
+      <UniqueIdentifier>{ca232503-30bf-4b18-813b-03924a929248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Source files">
+      <UniqueIdentifier>{c29a7e15-db30-41cd-80b4-3d8e1b27dc09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{54b629e3-9c65-48d2-ab4d-4eac22292101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Header Files">
+      <UniqueIdentifier>{9a130eb1-4887-4522-aa77-6ee0835a248b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Source Files">
+      <UniqueIdentifier>{8df902b9-b58f-4dda-91a0-787cd61a07f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\Header Files\openGLStuff.h">
+      <Filter>Framework\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Header Files\SOIL.h">
+      <Filter>Framework\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Header Files\glut.h">
+      <Filter>Framework\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Header Files\openGLFramework.h">
+      <Filter>Framework\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\random.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\ShapeDraw.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\SpriteDemoManager.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\stateManager.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\ball.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\BallManager.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\baseTypes.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\collInfo.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\field.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\FieldManager.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\game.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\gamedefs.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\gameObjects.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\InputManager.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Header Files\Object.h">
+      <Filter>Game\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Framework\Sources Files\openGLStuff.cpp">
+      <Filter>Framework\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Sources Files\openGLFramework.cpp">
+      <Filter>Framework\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\keyProcess.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\object.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\random.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\ShapeDraw.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\SpriteDemoManager.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\stateManager.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\ball.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\BallManager.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\field.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\FieldManager.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\game.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\InputManager.cpp">
+      <Filter>Game\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
