@@ -22,13 +22,18 @@
     <ClInclude Include="Game\Header Files\field.h" />
     <ClInclude Include="Game\Header Files\FieldManager.h" />
     <ClInclude Include="Game\Header Files\game.h" />
-    <ClInclude Include="Game\Header Files\gamedefs.h" />
-    <ClInclude Include="Game\Header Files\gameObjects.h" />
+    <ClInclude Include="Game\Header Files\GameDataStructures.h" />
     <ClInclude Include="Game\Header Files\InputManager.h" />
+    <ClInclude Include="Game\Header Files\LevelManager.h" />
+    <ClInclude Include="Game\Header Files\MapParser.h" />
     <ClInclude Include="Game\Header Files\Object.h" />
+    <ClInclude Include="Game\Header Files\PropsSpriteSheetParser.h" />
     <ClInclude Include="Game\Header Files\random.h" />
     <ClInclude Include="Game\Header Files\ShapeDraw.h" />
+    <ClInclude Include="Game\Header Files\RenderingDataStructures.h" />
     <ClInclude Include="Game\Header Files\SpriteDemoManager.h" />
+    <ClInclude Include="Game\Header Files\SpriteManager.h" />
+    <ClInclude Include="Game\Header Files\SpriteSheetParser.h" />
     <ClInclude Include="Game\Header Files\stateManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -41,10 +46,14 @@
     <ClCompile Include="Game\Source Files\game.cpp" />
     <ClCompile Include="Game\Source Files\InputManager.cpp" />
     <ClCompile Include="Game\Source Files\keyProcess.cpp" />
+    <ClCompile Include="Game\Source Files\MapParser.cpp" />
     <ClCompile Include="Game\Source Files\object.cpp" />
+    <ClCompile Include="Game\Source Files\PropsSpriteSheetParser.cpp" />
     <ClCompile Include="Game\Source Files\random.cpp" />
     <ClCompile Include="Game\Source Files\ShapeDraw.cpp" />
     <ClCompile Include="Game\Source Files\SpriteDemoManager.cpp" />
+    <ClCompile Include="Game\Source Files\SpriteManager.cpp" />
+    <ClCompile Include="Game\Source Files\SpriteSheetParser.cpp" />
     <ClCompile Include="Game\Source Files\stateManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -96,7 +105,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Game\Header Files;$(ProjectDir)\Framework\Header Files;C:\Software Engineering I\Software\OpenGL Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Game\include;$(ProjectDir)\Game\Header Files;$(ProjectDir)\Framework\Header Files;C:\Software Engineering I\Software\OpenGL Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>

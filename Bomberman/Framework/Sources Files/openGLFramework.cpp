@@ -6,7 +6,7 @@
 #include <gl/glu.h>														// Header File For The GLu32 Library
 #include "glut.h"
 #include "baseTypes.h"
-#include "openglframework.h"														// Header File For The NeHeGL Basecode
+#include "openglframework.h"											// Header File For The NeHeGL Basecode
 #include "game.h"
 
 #define WM_TOGGLEFULLSCREEN (WM_USER+1)									// Application Define Message For Toggling
@@ -38,8 +38,9 @@ void ReshapeGL (int width, int height)									// Reshape The Window When It's M
 	glMatrixMode (GL_PROJECTION);										// Select The Projection Matrix
 	glLoadIdentity ();													// Reset The Projection Matrix
 
+	// note changed this
 	// Define the dimensions of the Orthographic Viewing Volume
-	glOrtho(-2000.0, 2000.0, -2000.0, 2000.0, -800.0, 800.0);
+	glOrtho(0, width, 0, height, -10, 10);
 
 	glMatrixMode (GL_MODELVIEW);										// Select The Modelview Matrix
 	glLoadIdentity ();													// Reset The Modelview Matrix

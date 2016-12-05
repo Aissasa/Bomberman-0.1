@@ -8,7 +8,6 @@
 #include "glut.h"
 #include "baseTypes.h"
 #include "openglframework.h"	
-#include "gamedefs.h"
 #include "stateManager.h"
 
 StateManagerC* StateManagerC::sInstance=NULL;

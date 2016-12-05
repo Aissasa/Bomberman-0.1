@@ -8,7 +8,6 @@
 #include "glut.h"
 #include "baseTypes.h"
 #include "openglframework.h"	
-#include "gamedefs.h"
 #include "collinfo.h"
 #include "object.h"
 #include "field.h"

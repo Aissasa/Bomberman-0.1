@@ -1,14 +1,16 @@
+#pragma once
+
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 class InputManagerC
 {
 public:
-	static InputManagerC	*CreateInstance();
-	static InputManagerC	*GetInstance() {return sInstance;};
-	void					init(){};
-	void					update(){};
+	static InputManagerC *CreateInstance();
+	static InputManagerC *GetInstance() {return sInstance;};
+	void init(){};
+	void update(){};
 //checkout gameframework.cpp
-	Coord2D*					getCurrentMousePosition(){};
+	Coord2D* getCurrentMousePosition(){};
 	//keyboard interface?
 
 private:

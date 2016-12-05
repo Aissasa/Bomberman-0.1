@@ -30,16 +30,19 @@
 
 #include <windows.h>								// Header File For Windows
 
-typedef struct {									// Structure For Keyboard Stuff
-	BOOL keyDown [256];								// Holds TRUE / FALSE For Each Key
+typedef struct
+{									// Structure For Keyboard Stuff
+	BOOL keyDown[256];								// Holds TRUE / FALSE For Each Key
 } Keys;												// Keys
 
-typedef struct {									// Contains Information Vital To Applications
+typedef struct
+{									// Contains Information Vital To Applications
 	HINSTANCE		hInstance;						// Application Instance
 	const char*		className;						// Application ClassName
 } Application;										// Application
 
-typedef struct {									// Window Creation Info
+typedef struct
+{									// Window Creation Info
 	Application*		application;				// Application Structure
 	char*				title;						// Window Title
 	int					width;						// Width
@@ -48,7 +51,8 @@ typedef struct {									// Window Creation Info
 	BOOL				isFullScreen;				// FullScreen?
 } GL_WindowInit;									// GL_WindowInit
 
-typedef struct {									// Contains Information Vital To A Window
+typedef struct
+{									// Contains Information Vital To A Window
 	Keys*				keys;						// Key Structure
 	HWND				hWnd;						// Window Handle
 	HDC					hDC;						// Device Context
@@ -60,16 +64,16 @@ typedef struct {									// Contains Information Vital To A Window
 
 
 
-void TerminateApplication (GL_Window* window);		// Terminate The Application
+void TerminateApplication(GL_Window* window);		// Terminate The Application
 
-void ToggleFullscreen (GL_Window* window);			// Toggle Fullscreen / Windowed Mode
+void ToggleFullscreen(GL_Window* window);			// Toggle Fullscreen / Windowed Mode
 
 // These Are The Function You Must Provide
-BOOL Initialize (GL_Window* window, Keys* keys);	// Performs All Your Initialization
+BOOL Initialize(GL_Window* window, Keys* keys);	// Performs All Your Initialization
 
-void Deinitialize (void);							// Performs All Your DeInitialization
+void Deinitialize(void);							// Performs All Your DeInitialization
 
-void Update (DWORD milliseconds);					// Perform Motion Updates
+void Update(DWORD milliseconds);					// Perform Motion Updates
 
 void keyProcess(void);								// Perform Keyboard Processing
 

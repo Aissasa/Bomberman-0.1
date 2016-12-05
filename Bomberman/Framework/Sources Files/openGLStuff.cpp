@@ -18,6 +18,7 @@ void initOpenGLDrawing( GL_Window *window, Keys *keys, float backRed, float back
 	glEnable(GL_BLEND);											// Enable Blending
 	glEnable(GL_TEXTURE_2D);									// Enable Texture Mapping
 	glEnable(GL_CULL_FACE);										// Remove Back Face
+	glEnable(GL_DEPTH_TEST);
 	
 	g_window	= window;
 	g_keys		= keys;
@@ -29,7 +30,7 @@ void endOpenGLDrawing()
 
 void startOpenGLDrawing()
 {
-		// Clear the window
+	// Clear the window
 	glClear(GL_COLOR_BUFFER_BIT);
 	// Set the modelview matrix to be the identity matrix
 	glLoadIdentity();
