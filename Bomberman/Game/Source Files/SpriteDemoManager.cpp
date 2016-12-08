@@ -9,7 +9,6 @@
 #include <assert.h>
 #include "baseTypes.h"
 #include "openglframework.h"	
-#include "gamedefs.h"
 #include "spriteDemoManager.h"
 #include "random.h"
 

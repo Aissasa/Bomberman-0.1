@@ -1,5 +1,7 @@
 #pragma once
 
+#define DEBUG 1
+
 typedef char bool8_t;
 typedef char char8_t;
 typedef unsigned char uchar8_t;

@@ -57,8 +57,11 @@ void SpriteManagerC::updateSprites(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderSprites()
 {
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	renderBasicMap();
-	//renderItems();
+	renderItems();
+
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -150,7 +153,6 @@ void SpriteManagerC::renderCharacter(const Sprite_t* spriteToRender, const Coord
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderSingleSprite(const Sprite_t& sprite, Coord2D pos)
 {
-	glClear(GL_DEPTH_BUFFER_BIT);
 	glBindTexture(GL_TEXTURE_2D, sprite.textureMap);
 
 	glBegin(GL_QUADS);

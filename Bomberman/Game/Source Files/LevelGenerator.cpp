@@ -75,15 +75,15 @@ void LevelGeneratorC::generatePerk(Map_t* basicMap)
 		TileCoor_t randomTile;
 
 		randomTile.x = getRangedRandom(basicMap->playerSpawnTile.x, basicMap->width - 1);
-		randomTile.y = getRangedRandom(1, basicMap->playerSpawnTile.y);
+		randomTile.y = getRangedRandom(1, basicMap->playerSpawnTile.y + 1);
 
 		uint32_t index = basicMap->blocksLayer[randomTile.x][randomTile.y];
 
 		if (index == (uint32_t)SpriteIndicesInMap_t::softBlock)
 		{
 			itemAdded = true;
-			basicMap->doorTile.tileCoor = randomTile;
-			basicMap->doorTile.spriteIndex =(uint32_t) PerksIndicesInSpriteSheet_t::fire;
+			basicMap->perkTile.tileCoor = randomTile;
+			basicMap->perkTile.spriteIndex =(uint32_t) PerksIndicesInSpriteSheet_t::fire;
 		}
 	}
 }
@@ -98,7 +98,7 @@ void LevelGeneratorC::generateDoor(Map_t * basicMap)
 		TileCoor_t randomTile;
 
 		randomTile.x = getRangedRandom(basicMap->playerSpawnTile.x, basicMap->width - 1);
-		randomTile.y = getRangedRandom(1, basicMap->playerSpawnTile.y);
+		randomTile.y = getRangedRandom(1, basicMap->playerSpawnTile.y + 1);
 
 		if (sameTile(randomTile, basicMap->perkTile.tileCoor))
 		{
@@ -111,7 +111,7 @@ void LevelGeneratorC::generateDoor(Map_t * basicMap)
 		{
 			itemAdded = true;
 			basicMap->doorTile.tileCoor = randomTile;
-			basicMap->doorTile.spriteIndex = (uint32_t)PerksIndicesInSpriteSheet_t::fire;
+			basicMap->doorTile.spriteIndex = (uint32_t)SpriteIndicesInSpriteSheet_t::door;
 		}
 	}
 }
