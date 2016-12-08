@@ -23,11 +23,19 @@ void LevelManagerC::init(Map_t* currentMap)
 
 	LevelGeneratorC::CreateInstance();
 	LevelGeneratorC::GetInstance()->generateLevel(mCurrentMap);
+
+	mPlayer = new PlayerC();
+	Coord2D coor;
+	coor.x = (float_t) mCurrentMap->playerSpawnTile.x * currentMap->tileWidth;
+	coor.y = (float_t) mCurrentMap->playerSpawnTile.y * currentMap->tileHeight;
+
+	mPlayer->init(coor);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void LevelManagerC::update(DWORD milliseconds)
 {
+	mPlayer->update(milliseconds);
 }
 
 

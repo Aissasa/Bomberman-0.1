@@ -2,6 +2,9 @@
 
 #include "baseTypes.h"
 
+// NOTE ADD THIS TO EACH ANIM OR BETTER, EACH FRAME
+#define ANIMATIONS_TIME 100 
+
 typedef struct TileCoor
 {
 	uint16_t x;
@@ -9,12 +12,14 @@ typedef struct TileCoor
 
 }TileCoor_t;
 
+
 typedef struct TileWithSprite
 {
 	TileCoor_t tileCoor;
 	uint32_t spriteIndex;
 
 }TileWithSprite_t;
+
 
 typedef struct Map
 {
@@ -37,6 +42,18 @@ typedef struct Map
 
 }Map_t;
 
+
+typedef enum class SpriteSheetType
+{
+	Barom,
+	Bomb,
+	BombAE,
+	MC,
+	Props
+
+}SpriteSheetType_t;
+
+
 typedef enum class SpriteIndicesInSpriteSheet
 {
 	door = 2,
@@ -44,6 +61,7 @@ typedef enum class SpriteIndicesInSpriteSheet
 	solidBlock = 16,
 
 }SpriteIndicesInSpriteSheet_t;
+
 
 typedef enum class SpriteIndicesInMap
 {
@@ -64,6 +82,7 @@ typedef enum class PerksIndicesInSpriteSheet
 	skate = 8
 
 }PerksIndicesInSpriteSheet_t;
+
 
 typedef enum class PerksIndicesInMap
 {

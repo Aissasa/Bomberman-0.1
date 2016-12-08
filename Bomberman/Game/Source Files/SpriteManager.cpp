@@ -61,7 +61,7 @@ void SpriteManagerC::renderSprites()
 
 	renderBasicMap();
 	renderItems();
-
+	renderCharacter(&mPlayerCurrentSprite, mPlayerCurrentPosition);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -107,6 +107,7 @@ void SpriteManagerC::renderItems()
 	tilePos.x = mCurrentMap.tileWidth * mCurrentMap.doorTile.tileCoor.x;
 	tilePos.y = mCurrentMap.tileHeight * mCurrentMap.doorTile.tileCoor.y;
 
+	mCurrentSpriteSheet = mPropsSpriteSheet;
 	renderSingleSprite(currentSprite, tilePos);
 }
 
@@ -138,6 +139,7 @@ void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer m
 		tilePos.x = mCurrentMap.tileWidth * tile.x ;
 		tilePos.y = mCurrentMap.tileHeight * tile.y ;
 
+		mCurrentSpriteSheet = mPropsSpriteSheet;
 		renderSingleSprite(currentSprite, tilePos);
 	}
 
@@ -146,8 +148,14 @@ void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer m
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderCharacter(const Sprite_t* spriteToRender, const Coord2D & position)
 {
-	// todo render char at the pos
+	// draw a bg at that pos
+	mCurrentSpriteSheet = mPropsSpriteSheet;
+	Sprite_t sprt = mPropsSpriteSheet.sprites[(uint32_t)SpriteIndicesInSpriteSheet_t::greenBg];
+	renderSingleSprite(sprt, position);
 
+	Sprite_t sprite = *spriteToRender;
+	mCurrentSpriteSheet = mMCSpriteSheet;
+	renderSingleSprite(sprite, position);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -157,8 +165,8 @@ void SpriteManagerC::renderSingleSprite(const Sprite_t& sprite, Coord2D pos)
 
 	glBegin(GL_QUADS);
 
-	GLfloat texXUnit = mPropsSpriteSheet.texXUnit;
-	GLfloat texYUnit = mPropsSpriteSheet.texYUnit;
+	GLfloat texXUnit = mCurrentSpriteSheet.texXUnit;
+	GLfloat texYUnit = mCurrentSpriteSheet.texYUnit;
 
 	VertexFormatPos3Tex2 TLBR = { sprite.xId*texXUnit, sprite.yId*texYUnit,pos.x, pos.y + mCurrentMap.tileHeight, sprite.sortingLayer };
 
@@ -196,8 +204,40 @@ void SpriteManagerC::shutdown()
 {
 	// todo free and delete stuff
 }
+
 //---------------------------------------------------------------------------------------------------------------------
 Map_t * SpriteManagerC::getMap()
 {
 	return &mCurrentMap;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+Animation_t * SpriteManagerC::getAnimations(SpriteSheetType_t spshType)
+{
+	switch (spshType)
+	{
+		case SpriteSheetType_t::Barom:
+			return mBaromSpriteSheet.animations;
+
+		case SpriteSheetType_t::Bomb:
+			return mBombSpriteSheet.animations;
+
+		case SpriteSheetType_t::BombAE:
+			return mBombAESpriteSheet.animations;
+
+		case SpriteSheetType_t::MC:
+			return mMCSpriteSheet.animations;
+
+		case SpriteSheetType_t::Props:
+			return mPropsSpriteSheet.animations;
+
+		default:
+			return nullptr;
+	}
+}
+
+void SpriteManagerC::setPlayerRendParameters(Sprite_t * sprite, Coord2D pos)
+{
+	mPlayerCurrentPosition = pos;
+	mPlayerCurrentSprite = *sprite;
 }

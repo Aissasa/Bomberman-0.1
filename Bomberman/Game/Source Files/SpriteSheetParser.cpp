@@ -4,9 +4,9 @@
 #include <windows.h>											// Header File For Windows
 #include <gl\gl.h>											// Header File For The OpenGL32 Library
 #include "SpriteSheetParser.h"
-#include "RenderingDataStructures.h"
 #include <rapidjson/istreamwrapper.h>
 #include <fstream>
+#include "string.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -57,7 +57,7 @@ SpriteSheet_t SpriteSheetParserC::parseSpriteSheetJson(char8_t* filePath,const G
 	assert(frames.IsArray());
 
 	sps.numSprites = frames.Size();
-	// note if sprites with multiple rows are gonna be added, change this
+	// note if sprite sheets with multiple rows are gonna be added, change this
 	sps.texXUnit = 1.0f / sps.numSprites;
 	sps.texYUnit = 1.0f;
 
@@ -111,19 +111,22 @@ Animation_t SpriteSheetParserC::populateAnAnimation(const SpriteSheet_t& sps, co
 {
 	Animation_t newAnimation;
 
-	uint16_t nameLength = anims[i]["Name"].GetStringLength();
-	newAnimation.name = (const char8_t*)malloc(nameLength);
-	newAnimation.name = anims[i]["Name"].GetString();
+	//uint16_t nameLength = anims[i]["Name"].GetStringLength();
+	//newAnimation.name = (char8_t*)malloc(nameLength+2);
+	//strncpy(newAnimation.name, anims[i]["Name"].GetString(), nameLength+1);
+	//newAnimation.name = anims[i]["Name"].GetString();
 
-	uint16_t animationSpriteCount = anims[i]["Sprites"].Size();
-	newAnimation.sprites = (Sprite_t*)malloc(sizeof(Sprite_t) * animationSpriteCount);
-	for (SizeType j = 0; j < animationSpriteCount; j++)
+	newAnimation.numSprites = anims[i]["Sprites"].Size();
+
+	newAnimation.sprites = (Sprite_t*)malloc(sizeof(Sprite_t) * newAnimation.numSprites);
+	for (SizeType j = 0; j < newAnimation.numSprites; j++)
 	{
 		uint16_t index = anims[i]["Sprites"][j].GetInt();
 		newAnimation.sprites[j] = sps.sprites[index];
 	}
 
-	newAnimation.currentSprite = &newAnimation.sprites[0];
+	newAnimation.timeFromSpriteToSprite = ANIMATIONS_TIME;
+	newAnimation.currentSpriteIndex = 0;
 
 	return newAnimation;
 }

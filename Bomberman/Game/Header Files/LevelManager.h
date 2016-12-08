@@ -2,6 +2,7 @@
 
 #include "baseTypes.h"
 #include "GameDataStructures.h"
+#include "Player.h"
 
 // todo add a level info struct
 
@@ -21,12 +22,10 @@ private:
 	LevelManagerC() {};
 
 	Map_t* mCurrentMap;
+
+	PlayerC* mPlayer;
+
 	// enemies
 	// bombs  : manage their own animation by calling the renderer(in their update that is called in this update)
-	// perk pos and door pos
-	// lvl generator(enemies, soft blocks(with min and max), perk, door), knows the restricted locations
-	// (player spawn position perimeter)
-	// lvl manager passes the enemies number, types 
-	// todo lvl reader later with info about enemy types, numbers, and perk
 
 };

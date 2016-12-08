@@ -2,7 +2,6 @@
 
 #include "RenderingDataStructures.h"
 #include "SpriteSheetParser.h"
-#include "PropsSpriteSheetParser.h"
 #include "MapParser.h"
 
 #define BAROM_SPRITE_SHEET_PATH "Game/Resources/SpriteSheets/BaromSpriteSheet.png"
@@ -46,6 +45,8 @@ public:
 	void shutdown();
 
 	Map_t* getMap();
+	Animation_t* getAnimations(SpriteSheetType_t spshType);
+	void setPlayerRendParameters(Sprite_t* sprite, Coord2D pos);
 
 private:
 	static SpriteManagerC *sInstance;
@@ -66,6 +67,9 @@ private:
 	SpriteSheet_t mPropsSpriteSheet;
 
 	Map_t mCurrentMap;
+
+	Sprite_t mPlayerCurrentSprite;
+	Coord2D mPlayerCurrentPosition;
 
 	DWORD mLastUpdateTime;
 	DWORD mCurrentTime;

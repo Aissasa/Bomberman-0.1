@@ -15,6 +15,7 @@
 #include "InputManager.h"
 #include "SpriteManager.h"
 #include "LevelManager.h"
+//#include "Utils.h"
 
 // Declarations
 const char8_t CGame::mGameTitle[]="Bomberman 0.1";
@@ -44,6 +45,7 @@ CGame *CGame::CreateInstance()
 void CGame::init()
 {
 	//StateManagerC::CreateInstance();
+	//UtilsC::CreateInstance();
 	InputManagerC::CreateInstance();
 	SpriteManagerC::CreateInstance();
 	LevelManagerC::CreateInstance();
@@ -60,6 +62,7 @@ void CGame::init()
 void CGame::UpdateFrame(DWORD milliseconds)			
 {
 	InputManagerC::GetInstance()->update();
+	LevelManagerC::GetInstance()->update(milliseconds);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

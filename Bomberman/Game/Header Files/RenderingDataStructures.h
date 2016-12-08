@@ -16,13 +16,20 @@ typedef struct Sprite
 
 }Sprite_t;
 
+
 typedef struct Animation
 {
-	const char8_t* name;
+	//char8_t* name;
+
+	uint32_t timeFromSpriteToSprite; //speed
+	
 	Sprite_t* sprites;
-	Sprite_t* currentSprite;
+	uint16_t numSprites;	
+	uint16_t currentSpriteIndex;
+
 
 }Animation_t;
+
 
 typedef struct SpriteSheet
 {

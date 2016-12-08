@@ -16,6 +16,7 @@ public:
 	static const uint32_t mScreenWidth = 1300;
 	static const uint32_t mScreenHeight = 884;
 	static const uint32_t mBitsPerPixel = 32;
+
 private:
 	static const char8_t mGameTitle[20];
 	static CGame *sInstance;

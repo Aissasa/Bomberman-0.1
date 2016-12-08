@@ -33,7 +33,6 @@
     <ClInclude Include="Game\Header Files\MapParser.h" />
     <ClInclude Include="Game\Header Files\Object.h" />
     <ClInclude Include="Game\Header Files\Player.h" />
-    <ClInclude Include="Game\Header Files\PropsSpriteSheetParser.h" />
     <ClInclude Include="Game\Header Files\random.h" />
     <ClInclude Include="Game\Header Files\ShapeDraw.h" />
     <ClInclude Include="Game\Header Files\RenderingDataStructures.h" />
@@ -60,7 +59,6 @@
     <ClCompile Include="Game\Source Files\MapParser.cpp" />
     <ClCompile Include="Game\Source Files\object.cpp" />
     <ClCompile Include="Game\Source Files\Player.cpp" />
-    <ClCompile Include="Game\Source Files\PropsSpriteSheetParser.cpp" />
     <ClCompile Include="Game\Source Files\random.cpp" />
     <ClCompile Include="Game\Source Files\ShapeDraw.cpp" />
     <ClCompile Include="Game\Source Files\SpriteDemoManager.cpp" />

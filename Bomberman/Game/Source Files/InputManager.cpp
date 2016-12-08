@@ -27,23 +27,21 @@ void InputManagerC::update()
 	keyProcess();
 }
 
-Coord2D * InputManagerC::getPlayerDirection()
+Coord2D InputManagerC::getPlayerDirection()
 {
-	Coord2D* coor = (Coord2D*)malloc(sizeof(Coord2D));
-	coor->x = 0;
-	coor->y = 0;
+	Coord2D coor = {0, 0};
 
 	// make sure they are pressed together
 	if (!(g_keys->keyDown[VK_LEFT] && g_keys->keyDown[VK_RIGHT]))
 	{
 		if (g_keys->keyDown[VK_LEFT])
 		{
-			coor->x = -1;
+			coor.x = -1;
 		}
 
 		if (g_keys->keyDown[VK_RIGHT])
 		{
-			coor->x = 1;
+			coor.x = 1;
 		}
 	}
 
@@ -52,12 +50,12 @@ Coord2D * InputManagerC::getPlayerDirection()
 	{
 		if (g_keys->keyDown[VK_DOWN])
 		{
-			coor->x = -1;
+			coor.y = -1;
 		}
 
 		if (g_keys->keyDown[VK_UP])
 		{
-			coor->x = 1;
+			coor.y = 1;
 		}
 	}
 

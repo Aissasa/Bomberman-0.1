@@ -10,7 +10,7 @@ public:
 	void init();
 	void update();
 
-	Coord2D* getPlayerDirection();
+	Coord2D getPlayerDirection();
 
 private:
 	InputManagerC(){};

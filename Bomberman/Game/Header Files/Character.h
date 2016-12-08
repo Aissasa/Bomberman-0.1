@@ -10,12 +10,23 @@ typedef struct CharacterAnimations
 	Animation_t* idleRight;
 	Animation_t* idleLeft;
 
-	Animation_t* moveUp;
-	Animation_t* moveDown;
-	Animation_t* moveRight;
-	Animation_t* moveLeft;
+	Animation_t* walkUp;
+	Animation_t* walkDown;
+	Animation_t* walkRight;
+	Animation_t* walkLeft;
+
+	Animation_t* death;
 
 }CharacterAnimations_t;
+
+typedef struct CharacterMovement
+{
+	bool goingUp;
+	bool goingDown;
+	bool goingLeft;
+	bool goingRight;
+
+}CharacterMovement_t;
 
 
 class CharacterC
@@ -27,16 +38,27 @@ public:
 	virtual void init() {};
 	virtual void update(DWORD milliseconds) {};
 
-	// todo add accessors here
 	Coord2D getCurrentPostion() { return mCurrentPosition; };
 
 protected:
 	
 	Coord2D mCurrentPosition;
 	float_t mBaseSpeed;
+	bool mIsDying;
 
 	CharacterAnimations_t* mCharAnimations;
-	Animation_t mCurrentAnimation;
+	Animation_t* mCurrentAnimation;
+	int32_t mAnimationTimer;
+
+	CharacterMovement_t mCharacterMovement;
+
+	virtual void setAnimations() {};
+	virtual void updatePosition(DWORD milliseconds) {};
+	
+	void updateAnimation(DWORD milliseconds);
+	void animate(DWORD milliseconds, Animation_t* potentialAnimation);
+	CharacterAnimations_t* createCharAnimations();
+	void populateAnimation(Animation_t* anim, const Animation_t& sourceAnim);
 
 	void render();
 

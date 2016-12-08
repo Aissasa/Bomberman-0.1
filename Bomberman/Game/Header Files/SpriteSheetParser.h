@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameDataStructures.h"
+#include "RenderingDataStructures.h"
 #include "rapidjson/document.h"
 
 class SpriteSheetParserC
