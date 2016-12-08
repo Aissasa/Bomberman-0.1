@@ -29,6 +29,9 @@ SpriteManagerC* SpriteManagerC::CreateInstance()
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::init()
 {
+	SpriteSheetParserC::CreateInstance();
+	MapParserC::CreateInstance();
+
 	// note adapt to the screen size when drawing sprites
 	/* load an image file directly as a new OpenGL texture */
 	mBaromSpriteTextureMap = SOIL_load_OGL_texture(BAROM_SPRITE_SHEET_PATH, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, NULL);
@@ -37,23 +40,13 @@ void SpriteManagerC::init()
 	mMCSpriteTextureMap = SOIL_load_OGL_texture(MC_SPRITE_SHEET_PATH, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, NULL);
 	mPropsSpriteTextureMap = SOIL_load_OGL_texture(PROPS_SPRITE_SHEET_PATH, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, NULL);
 
-	mBaromSpriteSheetParser = new SpriteSheetParserC();
-	mBombSpriteSheetParser = new SpriteSheetParserC();
-	mBombAESpriteSheetParser = new SpriteSheetParserC();
-	mMCSpriteSheetParser = new SpriteSheetParserC();
-	mPropsSpriteSheetParser = new PropsSpriteSheetParserC();
+	mBaromSpriteSheet = SpriteSheetParserC::GetInsatnce()->parseSpriteSheetJson(BAROM_JSON_PATH, mBaromSpriteTextureMap);
+	mBombSpriteSheet = SpriteSheetParserC::GetInsatnce()->parseSpriteSheetJson(BOMB_JSON_PATH, mBombSpriteTextureMap);
+	mBombAESpriteSheet = SpriteSheetParserC::GetInsatnce()->parseSpriteSheetJson(BOMB_AE_JSON_PATH, mBombAESpriteTextureMap);
+	mMCSpriteSheet = SpriteSheetParserC::GetInsatnce()->parseSpriteSheetJson(MC_JSON_PATH, mMCSpriteTextureMap);
+	mPropsSpriteSheet = SpriteSheetParserC::GetInsatnce()->parseSpriteSheetJson(PROPS_JSON_PATH, mPropsSpriteTextureMap);
 
-	mBaromSpriteSheetParser->ParseJson(BAROM_JSON_PATH);
-	mBombSpriteSheetParser->ParseJson(BOMB_JSON_PATH);
-	mBombAESpriteSheetParser->ParseJson(BOMB_AE_JSON_PATH);
-	mMCSpriteSheetParser->ParseJson(MC_JSON_PATH);
-	mPropsSpriteSheetParser->ParseJson(PROPS_JSON_PATH);
-
-	MapParserC::createInstance();
-	mCurrentMap = MapParserC::getInstance()->parseMap(BASIC_MAP_JSON_PATH);
-
-	// todo add soft blocks, one item and a gate randomly in the map
-	// todo init sorting layers (init method after parse)
+	mCurrentMap = MapParserC::GetInstance()->parseMapJson(BASIC_MAP_JSON_PATH);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -64,14 +57,15 @@ void SpriteManagerC::updateSprites(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderSprites()
 {
-	renderMap();
+	renderBasicMap();
+	//renderItems();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderMap()
+void SpriteManagerC::renderBasicMap()
 {
-	TileCoor currentTile;
-	MapLayer currentMapLayer = Bg;
+	TileCoor_t currentTile;
+	BasicMapLayer currentMapLayer = BasicMapLayer::Bg;
 
 	for (uint16_t y = 0; y < mCurrentMap.height; y++)
 	{
@@ -80,104 +74,106 @@ void SpriteManagerC::renderMap()
 			currentTile = { x,y };
 
 			// render bg tile
-			currentMapLayer = Bg;
-			renderTile(currentTile, currentMapLayer);
-
-			// render items tile
-			currentMapLayer = Items;
-			renderTile(currentTile, currentMapLayer);
+			currentMapLayer = BasicMapLayer::Bg;
+			renderBasicMapTile(currentTile, currentMapLayer);
 
 			// render blocks tile
-			currentMapLayer = Blocks;
-			renderTile(currentTile, currentMapLayer);
+			currentMapLayer = BasicMapLayer::Blocks;
+			renderBasicMapTile(currentTile, currentMapLayer);
 
 		}
 	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderTile(const TileCoor & tile, MapLayer mapLayer)
+void SpriteManagerC::renderItems()
 {
-	Sprite_t* allSprites = mPropsSpriteSheetParser->getSprites();
-	float_t sortingLayer;
+	// render perk
+	Sprite_t currentSprite = mPropsSpriteSheet.sprites[mCurrentMap.perkTile.spriteIndex];
+
+	Coord2D tilePos;
+	tilePos.x = mCurrentMap.tileWidth * mCurrentMap.perkTile.tileCoor.x;
+	tilePos.y = mCurrentMap.tileHeight * mCurrentMap.perkTile.tileCoor.y ;
+
+	renderSingleSprite(currentSprite, tilePos);
+
+	// render door
+	currentSprite = mPropsSpriteSheet.sprites[mCurrentMap.doorTile.spriteIndex];
+
+	tilePos;
+	tilePos.x = mCurrentMap.tileWidth * mCurrentMap.doorTile.tileCoor.x;
+	tilePos.y = mCurrentMap.tileHeight * mCurrentMap.doorTile.tileCoor.y;
+
+	renderSingleSprite(currentSprite, tilePos);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer mapLayer)
+{
 	uint32_t currentSpriteIndex;
 
 	switch (mapLayer)
 	{
-		case Bg:
-			sortingLayer = -5;
+		case BasicMapLayer::Bg:
 			currentSpriteIndex = mCurrentMap.bgLayer[tile.x][tile.y];
 			break;
 
-		case Items:
-			sortingLayer = 0;
-			currentSpriteIndex = mCurrentMap.itemsLayer[tile.x][tile.y];
-			break;
-
-		case Blocks:
-			sortingLayer = 5;
+		case BasicMapLayer::Blocks:
 			currentSpriteIndex = mCurrentMap.blocksLayer[tile.x][tile.y];
 			break;
 
 		default:
-			sortingLayer = 0;
 			currentSpriteIndex = 0;
 			break;
 	}
 
 	if (currentSpriteIndex > 0)
 	{
-		Sprite_t currentSprite = allSprites[--currentSpriteIndex];
+		Sprite_t currentSprite = mPropsSpriteSheet.sprites[--currentSpriteIndex];
 
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glBindTexture(GL_TEXTURE_2D, mPropsSpriteTextureMap);
+		Coord2D tilePos;
+		tilePos.x = mCurrentMap.tileWidth * tile.x ;
+		tilePos.y = mCurrentMap.tileHeight * tile.y ;
 
-		glBegin(GL_QUADS);
-
-		//glColor4ub(0xFF, 0xFF, 0xFF, 0xFF);
-
-		GLfloat xStartPos = mCurrentMap.tileWidth * tile.x + X_MAP_OFFSET;
-		GLfloat yStartPos = mCurrentMap.tileHeight * tile.y + Y_MAP_OFFSET;
-
-		GLfloat texXUnit = mPropsSpriteSheetParser->getTexXUnit();
-		GLfloat texYUnit = mPropsSpriteSheetParser->getTexYUnit();
-
-		VertexFormatPos3Tex2 TLBR = { currentSprite.xId*texXUnit, currentSprite.yId*texYUnit,xStartPos, yStartPos + mCurrentMap.tileHeight, sortingLayer };
-
-		VertexFormatPos3Tex2 BLBL = { currentSprite.xId*texXUnit, (currentSprite.yId + 1)*texYUnit, xStartPos, yStartPos, sortingLayer };
-
-		VertexFormatPos3Tex2 BRTL = { (currentSprite.xId + 1)*texXUnit, (currentSprite.yId + 1)*texYUnit, xStartPos + mCurrentMap.tileWidth, yStartPos + 0, sortingLayer };
-
-		VertexFormatPos3Tex2 TRTR = { (currentSprite.xId + 1)*texXUnit, currentSprite.yId*texYUnit, xStartPos + mCurrentMap.tileWidth, yStartPos + mCurrentMap.tileHeight, sortingLayer };
-
-		renderSingleSprite(TLBR, BLBL, BRTL, TRTR);
-
-		glEnd();
+		renderSingleSprite(currentSprite, tilePos);
 	}
-
-	// glDisable(GL_TEXTURE_2D);
-	//        
-	//glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
-	//glColor3f(1.0f, 0.0f, 0.0f); // Red
-
-	//glVertex2f(0.0f, 0.0f);
-	//glVertex2f(100, 0.0f);
-	//glVertex2f(100, 100);     //  so that the normal (front-face) is facing you    
-	//glVertex2f(0.0f, 100);     // Define vertices in counter-clockwise (CCW) order
-	//glEnd();
-	//glFlush();
 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderCharacter(const Coord2D & position)
+void SpriteManagerC::renderCharacter(const Sprite_t* spriteToRender, const Coord2D & position)
 {
 	// todo render char at the pos
 
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderSingleSprite(const VertexFormatPos3Tex2& texTopLeftQuadBottomRight, const VertexFormatPos3Tex2& texBottomLeftQuadBottom,
+void SpriteManagerC::renderSingleSprite(const Sprite_t& sprite, Coord2D pos)
+{
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glBindTexture(GL_TEXTURE_2D, sprite.textureMap);
+
+	glBegin(GL_QUADS);
+
+	GLfloat texXUnit = mPropsSpriteSheet.texXUnit;
+	GLfloat texYUnit = mPropsSpriteSheet.texYUnit;
+
+	VertexFormatPos3Tex2 TLBR = { sprite.xId*texXUnit, sprite.yId*texYUnit,pos.x, pos.y + mCurrentMap.tileHeight, sprite.sortingLayer };
+
+	VertexFormatPos3Tex2 BLBL = { sprite.xId*texXUnit, (sprite.yId + 1)*texYUnit, pos.x, pos.y, sprite.sortingLayer };
+
+	VertexFormatPos3Tex2 BRTL = { (sprite.xId + 1)*texXUnit, (sprite.yId + 1)*texYUnit, pos.x + mCurrentMap.tileWidth, pos.y + 0, sprite.sortingLayer };
+
+	VertexFormatPos3Tex2 TRTR = { (sprite.xId + 1)*texXUnit, sprite.yId*texYUnit, pos.x + mCurrentMap.tileWidth, pos.y + mCurrentMap.tileHeight, sprite.sortingLayer };
+
+	renderTexture(TLBR, BLBL, BRTL, TRTR);
+
+	glEnd();
+}
+
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::renderTexture(const VertexFormatPos3Tex2& texTopLeftQuadBottomRight, const VertexFormatPos3Tex2& texBottomLeftQuadBottom,
 										const VertexFormatPos3Tex2& texBottomRightQuadTopLeft, const VertexFormatPos3Tex2& texTopRightQuadTopRight)
 {
 	glTexCoord2f(texTopLeftQuadBottomRight.tu, texTopLeftQuadBottomRight.tv);                              // top left of the texture
@@ -193,7 +189,13 @@ void SpriteManagerC::renderSingleSprite(const VertexFormatPos3Tex2& texTopLeftQu
 	glVertex3f(texTopRightQuadTopRight.px, texTopRightQuadTopRight.py, texTopRightQuadTopRight.pz);  // Top Right Of The Quad
 }
 
+//---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::shutdown()
 {
 	// todo free and delete stuff
+}
+//---------------------------------------------------------------------------------------------------------------------
+Map_t * SpriteManagerC::getMap()
+{
+	return &mCurrentMap;
 }

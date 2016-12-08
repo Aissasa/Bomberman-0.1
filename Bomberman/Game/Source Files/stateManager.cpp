@@ -11,7 +11,7 @@
 #include "stateManager.h"
 
 StateManagerC* StateManagerC::sInstance=NULL;
-
+// urgent add game states here
 
 StateManagerC *StateManagerC::CreateInstance()
 {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RenderingDataStructures.h"
 #include "SpriteSheetParser.h"
 #include "PropsSpriteSheetParser.h"
 #include "MapParser.h"
@@ -18,9 +19,6 @@
 
 #define BASIC_MAP_JSON_PATH "Game/Resources/Jsons/BasicMap.json"
 
-#define X_MAP_OFFSET 20
-#define Y_MAP_OFFSET 15
-
 
 struct VertexFormatPos3Tex2
 {   // Custom vertex format for position+normal
@@ -28,16 +26,9 @@ struct VertexFormatPos3Tex2
 	float px, py, pz;        ///< untransformed (world-space) position>
 };
 
-struct TileCoor
-{
-	uint16_t x;
-	uint16_t y;
-};
-
-enum MapLayer
+enum class BasicMapLayer
 {
 	Bg,
-	Items,
 	Blocks
 };
 
@@ -51,14 +42,14 @@ public:
 	void init();
 	void updateSprites(DWORD milliseconds);
 	void renderSprites();
-	void renderCharacter(const Coord2D& position);
+	void renderCharacter(const Sprite_t* spriteToRender ,const Coord2D& position);
 	void shutdown();
+
+	Map_t* getMap();
 
 private:
 	static SpriteManagerC *sInstance;
 	SpriteManagerC() {};
-
-	//GLuint mCurrentSpriteTextureMap;
 
 	GLuint mBaromSpriteTextureMap;
 	GLuint mBombSpriteTextureMap;
@@ -66,22 +57,24 @@ private:
 	GLuint mMCSpriteTextureMap;
 	GLuint mPropsSpriteTextureMap;
 
-	SpriteSheetParserC* mBaromSpriteSheetParser;
-	SpriteSheetParserC* mBombSpriteSheetParser;
-	SpriteSheetParserC* mBombAESpriteSheetParser;
-	SpriteSheetParserC* mMCSpriteSheetParser;
-	SpriteSheetParserC* mPropsSpriteSheetParser;
+	SpriteSheet_t mCurrentSpriteSheet;
+
+	SpriteSheet_t mBaromSpriteSheet;
+	SpriteSheet_t mBombSpriteSheet;
+	SpriteSheet_t mBombAESpriteSheet;
+	SpriteSheet_t mMCSpriteSheet;
+	SpriteSheet_t mPropsSpriteSheet;
 
 	Map_t mCurrentMap;
 
 	DWORD mLastUpdateTime;
 	DWORD mCurrentTime;
 
-	//VertexFormatPos3Tex2 *mVertexArray;
-
-	void renderMap();
-	void renderTile(const TileCoor& tile, MapLayer mapLayer);
-	void renderSingleSprite(const VertexFormatPos3Tex2& texTopLeftQuadBottomRight, const VertexFormatPos3Tex2& texBottomLeftQuadBottom,
+	void renderBasicMap();
+	void renderItems();
+	void renderBasicMapTile(const TileCoor_t& tile, BasicMapLayer mapLayer);
+	void renderSingleSprite(const Sprite_t& sprite, Coord2D pos);
+	void renderTexture(const VertexFormatPos3Tex2& texTopLeftQuadBottomRight, const VertexFormatPos3Tex2& texBottomLeftQuadBottom,
 							const VertexFormatPos3Tex2& texBottomRightQuadTopLeft, const VertexFormatPos3Tex2& texTopRightQuadTopRight);
 
 };

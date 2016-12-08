@@ -7,14 +7,16 @@ class MapParserC
 {
 public:
 
-	static MapParserC* createInstance();
-	static MapParserC* getInstance() { return sInstance; }
+	static MapParserC* CreateInstance();
+	static MapParserC* GetInstance() { return sInstance; }
 	~MapParserC() {};
 
-	Map_t parseMap(char8_t* filePath);
+	Map_t parseMapJson(char8_t* filePath);
 
 private:
 	static MapParserC* sInstance;
 	MapParserC() {};
 	void buildAndPopulateLayersInBasicMap(Map_t& map, const rapidjson::Value & layers);
+	void buildAndPopulateRestrictedTiles(Map_t& map, const rapidjson::Value & restrictedTiles);
+
 };

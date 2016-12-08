@@ -1,9 +1,18 @@
 #include <stdlib.h>
-
+#include "time.h"
 #include "random.h"
+
+static bool first = true;
+
 float getRangedRandom(float min, float max)
 {
-    int r = rand();
+	if (first)
+	{
+		srand((unsigned int) time(NULL)); //seeding for the first time only!
+		first = false;
+	}
+
+	float r = (float) rand();
 
     float r1 = (float)r/(float)RAND_MAX;
 
@@ -13,8 +22,15 @@ float getRangedRandom(float min, float max)
 
     return r1;
 }
+
 int getRangedRandom(int min, int max)
 {
+	if (first)
+	{
+		srand((unsigned int) time(NULL)); //seeding for the first time only!
+		first = false;
+	}
+
     int r = rand();
 
     float r2 = (float)r/(float)RAND_MAX;

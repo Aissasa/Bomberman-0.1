@@ -14,11 +14,13 @@
 #include "StateManager.h"
 #include "InputManager.h"
 #include "SpriteManager.h"
+#include "LevelManager.h"
 
 // Declarations
 const char8_t CGame::mGameTitle[]="Bomberman 0.1";
 CGame* CGame::sInstance=NULL;
 
+//---------------------------------------------------------------------------------------------------------------------
 BOOL Initialize (GL_Window* window, Keys* keys)					// Any OpenGL Initialization Goes Here
 {
 	initOpenGLDrawing(window,keys,0.0f, 0.0f, 0.0f);
@@ -27,61 +29,54 @@ BOOL Initialize (GL_Window* window, Keys* keys)					// Any OpenGL Initialization
 	return TRUE;						
 }
 
-void CGame::init()
-{
-	//BallManagerC::CreateInstance();
-	//StateManagerC::CreateInstance();
-	//FieldManagerC::CreateInstance();
-	InputManagerC::CreateInstance();
-	//SpriteDemoManagerC::CreateInstance();
-	SpriteManagerC::CreateInstance();
-
-	InputManagerC::GetInstance()->init();
-
-	//BallManagerC::GetInstance()->init();
-	//StateManagerC::GetInstance()->setState(StateManagerC::HALF_BALLS_FILLED);
-	//FieldManagerC::GetInstance()->init();
-	//SpriteDemoManagerC::GetInstance()->init(28,26);
-	SpriteManagerC::GetInstance()->init();
-
-}
-void CGame::UpdateFrame(DWORD milliseconds)			
-{
-	keyProcess();
-	//SpriteDemoManagerC::GetInstance()->updateSprites(milliseconds);
-	//BallManagerC::GetInstance()->updateBalls(milliseconds);
-//	InputManagerC::GetInstance()->update(milliseconds);
-}
-
-void CGame::DrawScene(void)											
-{
-	startOpenGLDrawing();
-	SpriteManagerC::GetInstance()->renderSprites();
-	//SpriteDemoManagerC::GetInstance()->renderSprites();
-	//BallManagerC::GetInstance()->renderBalls();
-	//FieldManagerC::GetInstance()->renderField();
-}
-
-
+//---------------------------------------------------------------------------------------------------------------------
 CGame *CGame::CreateInstance()
 {
 	if (sInstance == NULL)
 	{
 		sInstance = new CGame();
 	}
-	
+
 	return sInstance;
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+void CGame::init()
+{
+	//StateManagerC::CreateInstance();
+	InputManagerC::CreateInstance();
+	SpriteManagerC::CreateInstance();
+	LevelManagerC::CreateInstance();
+
+	InputManagerC::GetInstance()->init();
+	SpriteManagerC::GetInstance()->init();
+	LevelManagerC::GetInstance()->init(SpriteManagerC::GetInstance()->getMap());
+
+	//StateManagerC::GetInstance()->setState(StateManagerC::HALF_BALLS_FILLED);
+
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void CGame::UpdateFrame(DWORD milliseconds)			
+{
+	InputManagerC::GetInstance()->update();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void CGame::DrawScene(void)											
+{
+	startOpenGLDrawing();
+	SpriteManagerC::GetInstance()->renderSprites();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 void CGame::shutdown()
 {
-	//BallManagerC::GetInstance()->shutdown();
 	//StateManagerC::GetInstance()->shutdown();
-	//FieldManagerC::GetInstance()->shutdown();
-	//SpriteDemoManagerC::GetInstance()->shutdown();
 }
+
+//---------------------------------------------------------------------------------------------------------------------
 void CGame::DestroyGame(void)
 {
-	//delete BallManagerC::GetInstance();	
 	//delete StateManagerC::GetInstance();	
-	//delete FieldManagerC::GetInstance();	
 }

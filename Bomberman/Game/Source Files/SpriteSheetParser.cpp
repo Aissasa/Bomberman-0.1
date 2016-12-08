@@ -1,16 +1,38 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "assert.h"
+#include <windows.h>											// Header File For Windows
+#include <gl\gl.h>											// Header File For The OpenGL32 Library
 #include "SpriteSheetParser.h"
+#include "RenderingDataStructures.h"
 #include <rapidjson/istreamwrapper.h>
 #include <fstream>
 
 using namespace std;
 using namespace rapidjson;
 
+
+SpriteSheetParserC* SpriteSheetParserC::sInsatnce = nullptr;
+
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteSheetParserC::ParseJson(char8_t* filePath)
+SpriteSheetParserC * SpriteSheetParserC::CreateInstance()
 {
+	if (sInsatnce == nullptr)
+	{
+		sInsatnce = new SpriteSheetParserC();
+	}
+
+	return sInsatnce;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+SpriteSheet_t SpriteSheetParserC::parseSpriteSheetJson(char8_t* filePath,const GLfloat textureMap)
+{
+	SpriteSheet_t sps;
+	float_t sortingLayer = -20;
+
+	sps.textureMap = textureMap;
+
 	// put the file in a stream
 	FILE* jsonFile = fopen(filePath, "rb");
 
@@ -26,73 +48,44 @@ void SpriteSheetParserC::ParseJson(char8_t* filePath)
 	// make sure it is a valid json, and it has frames array in it
 	assert(jsonDoc.IsObject());
 
+	if (jsonDoc.HasMember("sortingLayer"))
+	{
+		sortingLayer = jsonDoc["sortingLayer"].GetFloat();
+	}
+
 	const Value& frames = jsonDoc["frames"];
 	assert(frames.IsArray());
 
-	numSprites = frames.Size();
+	sps.numSprites = frames.Size();
 	// note if sprites with multiple rows are gonna be added, change this
-	texXUnit = 1.0f / numSprites;
-	texYUnit = 1.0f;
+	sps.texXUnit = 1.0f / sps.numSprites;
+	sps.texYUnit = 1.0f;
 
 	// store sprites
-	sprites = (Sprite_t*)malloc(numSprites * sizeof(Sprite_t));
-	for (SizeType i = 0; i < numSprites; i++) // Uses SizeType instead of size_t
+	sps.sprites = (Sprite_t*)malloc(sps.numSprites * sizeof(Sprite_t));
+	for (SizeType i = 0; i < sps.numSprites; i++) // Uses SizeType instead of size_t
 	{
-		sprites[i] = populateASprite(frames, i);
+		sps.sprites[i] = populateASprite(sps, frames, i, sortingLayer);
 	}
 
 	// store animations
 	const Value& anims = jsonDoc["Animations"];
 	assert(anims.IsArray());
 
-	numAnimations = anims.Size();
-	animations = (Animation_t*)malloc(sizeof(Animation_t)*numAnimations);
-	for (SizeType i = 0; i < numAnimations; i++) // Uses SizeType instead of size_t
+	sps.numAnimations = anims.Size();
+	sps.animations = (Animation_t*)malloc(sizeof(Animation_t)*sps.numAnimations);
+	for (SizeType i = 0; i < sps.numAnimations; i++) // Uses SizeType instead of size_t
 	{
-		animations[i] = populateAnAnimation(anims, i);
+		sps.animations[i] = populateAnAnimation(sps, anims, i);
 	}
 
 	fclose(jsonFile);
+
+	return sps;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-Sprite_t * SpriteSheetParserC::getSprites()
-{
-	return sprites;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-Animation_t * SpriteSheetParserC::getAnimations()
-{
-	return animations;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-uint32_t SpriteSheetParserC::getNumSprites()
-{
-	return numSprites;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-uint32_t SpriteSheetParserC::getNumAnimations()
-{
-	return numAnimations;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-float_t SpriteSheetParserC::getTexXUnit()
-{
-	return texXUnit;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-float_t SpriteSheetParserC::getTexYUnit()
-{
-	return texYUnit;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-Sprite_t SpriteSheetParserC::populateASprite(const Value& frames, uint16_t i)
+Sprite_t SpriteSheetParserC::populateASprite(const SpriteSheet_t& sps, const Value& frames, uint16_t i, float_t sortingLayer)
 {
 	Sprite_t newSprite;
 
@@ -100,13 +93,21 @@ Sprite_t SpriteSheetParserC::populateASprite(const Value& frames, uint16_t i)
 	newSprite.height = (float_t)frames[i]["frame"]["h"].GetInt();
 	newSprite.xId = (float_t)frames[i]["frame"]["x"].GetInt() / newSprite.width;
 	newSprite.yId = (float_t)frames[i]["frame"]["y"].GetInt() / newSprite.height;
-	newSprite.sortingLayer = 0; // default
+	if (sortingLayer < -10)
+	{
+		newSprite.sortingLayer = frames[i]["sortingLayer"].GetFloat(); 
+	}
+	else
+	{
+		newSprite.sortingLayer = sortingLayer; // default for all sprites
+	}
+	newSprite.textureMap = sps.textureMap;
 
 	return newSprite;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-Animation_t SpriteSheetParserC::populateAnAnimation(const Value& anims, uint16_t i)
+Animation_t SpriteSheetParserC::populateAnAnimation(const SpriteSheet_t& sps, const Value& anims, uint16_t i)
 {
 	Animation_t newAnimation;
 
@@ -119,7 +120,7 @@ Animation_t SpriteSheetParserC::populateAnAnimation(const Value& anims, uint16_t
 	for (SizeType j = 0; j < animationSpriteCount; j++)
 	{
 		uint16_t index = anims[i]["Sprites"][j].GetInt();
-		newAnimation.sprites[j] = sprites[index];
+		newAnimation.sprites[j] = sps.sprites[index];
 	}
 
 	newAnimation.currentSprite = &newAnimation.sprites[0];

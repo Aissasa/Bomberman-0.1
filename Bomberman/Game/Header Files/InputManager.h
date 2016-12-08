@@ -7,14 +7,14 @@ class InputManagerC
 public:
 	static InputManagerC *CreateInstance();
 	static InputManagerC *GetInstance() {return sInstance;};
-	void init(){};
-	void update(){};
-//checkout gameframework.cpp
-	Coord2D* getCurrentMousePosition(){};
-	//keyboard interface?
+	void init();
+	void update();
+
+	Coord2D* getPlayerDirection();
 
 private:
 	InputManagerC(){};
+	void keyProcess();
 
 	static InputManagerC *sInstance;
 	

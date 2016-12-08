@@ -2,6 +2,7 @@
   "frames": [
     {
       "filename": "Bg.png",
+      "sortingLayer": -5.0,
       "frame": {
         "x": 0,
         "y": 0,
@@ -27,6 +28,7 @@
     },
     {
       "filename": "Bomb_Up.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 52,
         "y": 0,
@@ -52,6 +54,7 @@
     },
     {
       "filename": "Door.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 104,
         "y": 0,
@@ -77,6 +80,7 @@
     },
     {
       "filename": "Fire.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 156,
         "y": 0,
@@ -102,6 +106,7 @@
     },
     {
       "filename": "Out.png",
+      "sortingLayer": -5.0,
       "frame": {
         "x": 208,
         "y": 0,
@@ -127,6 +132,7 @@
     },
     {
       "filename": "Pass_Bomb.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 260,
         "y": 0,
@@ -152,6 +158,7 @@
     },
     {
       "filename": "Pass_Soft_Block.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 312,
         "y": 0,
@@ -177,6 +184,7 @@
     },
     {
       "filename": "Remote.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 364,
         "y": 0,
@@ -202,6 +210,7 @@
     },
     {
       "filename": "Skate.png",
+      "sortingLayer": 2.0,
       "frame": {
         "x": 416,
         "y": 0,
@@ -227,6 +236,7 @@
     },
     {
       "filename": "Soft_Block.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 468,
         "y": 0,
@@ -252,6 +262,7 @@
     },
     {
       "filename": "Soft_Block_Fading_1.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 520,
         "y": 0,
@@ -277,6 +288,7 @@
     },
     {
       "filename": "Soft_Block_Fading_2.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 572,
         "y": 0,
@@ -302,6 +314,7 @@
     },
     {
       "filename": "Soft_Block_Fading_3.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 624,
         "y": 0,
@@ -327,6 +340,7 @@
     },
     {
       "filename": "Soft_Block_Fading_4.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 676,
         "y": 0,
@@ -352,6 +366,7 @@
     },
     {
       "filename": "Soft_Block_Fading_5.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 728,
         "y": 0,
@@ -377,6 +392,7 @@
     },
     {
       "filename": "Soft_Block_Fading_6.png",
+      "sortingLayer": 8.5,
       "frame": {
         "x": 780,
         "y": 0,
@@ -402,6 +418,7 @@
     },
     {
       "filename": "Solid_Block.png",
+      "sortingLayer": 9,
       "frame": {
         "x": 832,
         "y": 0,
@@ -439,6 +456,12 @@
     "smartupdate": "$TexturePacker:SmartUpdate:13b43a1da0065a62f86e0bc8a05d7f38:c0d79e755f0a9666171d77ba0e2ba50b:1579c9f837bbaf5c6e29866cb415675a$"
   },
   "Animations": [
+    {
+      "Name": "Soft_Block_Idle",
+      "Sprites": [
+        16
+      ]
+    },
     {
       "Name": "Soft_Block_Fading",
       "Sprites": [
