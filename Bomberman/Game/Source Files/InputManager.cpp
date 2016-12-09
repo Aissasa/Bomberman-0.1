@@ -8,6 +8,7 @@
 
 InputManagerC* InputManagerC::sInstance = NULL;
 
+//---------------------------------------------------------------------------------------------------------------------
 InputManagerC *InputManagerC::CreateInstance()
 {
 	if (sInstance == NULL)
@@ -18,18 +19,16 @@ InputManagerC *InputManagerC::CreateInstance()
 	return sInstance;
 }
 
-void InputManagerC::init()
-{
-}
-
+//---------------------------------------------------------------------------------------------------------------------
 void InputManagerC::update()
 {
 	keyProcess();
 }
 
+//---------------------------------------------------------------------------------------------------------------------
 Coord2D InputManagerC::getPlayerDirection()
 {
-	Coord2D coor = {0, 0};
+	Coord2D coor = { 0, 0 };
 
 	// make sure they are pressed together
 	if (!(g_keys->keyDown[VK_LEFT] && g_keys->keyDown[VK_RIGHT]))
@@ -63,6 +62,50 @@ Coord2D InputManagerC::getPlayerDirection()
 
 }
 
+//---------------------------------------------------------------------------------------------------------------------
+bool InputManagerC::placeBombKeyPressed()
+{
+	static bool keyWasPressed = false;
+
+	if (g_keys->keyDown['Z'])
+	{
+		if (!keyWasPressed)
+		{
+			keyWasPressed = true;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	keyWasPressed = false;
+	return false;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool InputManagerC::explodeBombsKeyPressed()
+{
+	static bool keyWasPressed = false;
+
+	if (g_keys->keyDown['X'])
+	{
+		if (!keyWasPressed)
+		{
+			keyWasPressed = true;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	keyWasPressed = false;
+	return false;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 void InputManagerC::keyProcess()
 {
 	//handles keyboard processing

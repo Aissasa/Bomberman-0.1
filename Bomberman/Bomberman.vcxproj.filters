@@ -66,18 +66,6 @@
     <ClInclude Include="Framework\Header Files\openGLFramework.h">
       <Filter>Framework\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Header Files\ball.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\field.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\game.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\Object.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Header Files\GameDataStructures.h">
       <Filter>Game\Header Files\Types</Filter>
     </ClInclude>
@@ -87,22 +75,10 @@
     <ClInclude Include="Game\Header Files\baseTypes.h">
       <Filter>Game\Header Files\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Header Files\collInfo.h">
-      <Filter>Game\Header Files\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\FieldManager.h">
-      <Filter>Game\Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\BallManager.h">
-      <Filter>Game\Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Header Files\InputManager.h">
       <Filter>Game\Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Game\Header Files\LevelManager.h">
-      <Filter>Game\Header Files\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Header Files\SpriteDemoManager.h">
       <Filter>Game\Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Game\Header Files\SpriteManager.h">
@@ -144,6 +120,9 @@
     <ClInclude Include="Game\Header Files\CollisionManager.h">
       <Filter>Game\Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Header Files\game.h">
+      <Filter>Game\Header Files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Sources Files\openGLStuff.cpp">
@@ -152,28 +131,7 @@
     <ClCompile Include="Framework\Sources Files\openGLFramework.cpp">
       <Filter>Framework\Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Source Files\object.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\ball.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\field.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\game.cpp">
-      <Filter>Game\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\BallManager.cpp">
-      <Filter>Game\Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\FieldManager.cpp">
-      <Filter>Game\Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Source Files\InputManager.cpp">
-      <Filter>Game\Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\SpriteDemoManager.cpp">
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\SpriteManager.cpp">
@@ -216,6 +174,9 @@
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\CollisionManager.cpp">
+      <Filter>Game\Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\game.cpp">
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>

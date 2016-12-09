@@ -125,7 +125,6 @@ void CharacterC::populateAnimation(Animation_t * anim, const Animation_t& source
 //---------------------------------------------------------------------------------------------------------------------
 void CharacterC::render()
 {
-	//SpriteManagerC::GetInstance()->renderCharacter(&(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
 	SpriteManagerC::GetInstance()->setPlayerRendParameters(&(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
 }
 

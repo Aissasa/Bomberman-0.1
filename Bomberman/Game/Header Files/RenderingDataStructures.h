@@ -3,6 +3,7 @@
 #include "baseTypes.h"
 #include <windows.h>											// Header File For Windows
 #include <gl\gl.h>											// Header File For The OpenGL32 Library
+#include <vector>
 
 typedef struct Sprite
 {
@@ -16,6 +17,12 @@ typedef struct Sprite
 
 }Sprite_t;
 
+
+typedef struct RenderableSprite
+{
+	Sprite_t sprite;
+	Coord2D position;
+}RenderableSprite_t;
 
 typedef struct Animation
 {
@@ -44,3 +51,5 @@ typedef struct SpriteSheet
 	GLfloat textureMap;
 
 }SpriteSheet_t;
+
+typedef std::vector<RenderableSprite_t> Renderable_Sprite_Vect_t;

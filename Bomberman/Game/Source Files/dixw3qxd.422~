@@ -3,7 +3,7 @@
 #include "SpriteManager.h"
 #include "LevelManager.h"
 
-uint16_t BombC::sCurrentId = 0;
+
 //---------------------------------------------------------------------------------------------------------------------
 BombC::BombC(Coord2D position, uint16_t range, bool remoteControlled)
 {
@@ -17,15 +17,12 @@ BombC::BombC(Coord2D position, uint16_t range, bool remoteControlled)
 	*mAnimation = SpriteManagerC::GetInstance()->getAnimations(SpriteSheetType_t::Bomb)[0];
 	mAnimation->timeFromSpriteToSprite = BOMB_ANIMATION_TIME;
 	mAnimationTimer = mAnimation->timeFromSpriteToSprite;
-
-	mId = sCurrentId++;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void BombC::update(DWORD milliseconds)
 {
 	updateAnimation(milliseconds);
-	render();
 	if (!mRemoteControlled)
 	{
 		mExplosionTimer -= milliseconds;
@@ -34,6 +31,8 @@ void BombC::update(DWORD milliseconds)
 			explode();
 		}
 	}
+
+	render();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -46,7 +45,7 @@ void BombC::render()
 void BombC::explode()
 {
 	// createae, and send them to lvl manager
-	LevelManagerC::GetInstance()->addToTobeRemovedArray(*this);
+	LevelManagerC::GetInstance()->addToTobeRemovedArray();
 
 }
 

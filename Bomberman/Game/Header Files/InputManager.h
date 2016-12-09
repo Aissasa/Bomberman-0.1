@@ -7,10 +7,11 @@ class InputManagerC
 public:
 	static InputManagerC *CreateInstance();
 	static InputManagerC *GetInstance() {return sInstance;};
-	void init();
 	void update();
 
 	Coord2D getPlayerDirection();
+	bool placeBombKeyPressed();
+	bool explodeBombsKeyPressed();
 
 private:
 	InputManagerC(){};

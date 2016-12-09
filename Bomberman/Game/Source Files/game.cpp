@@ -50,7 +50,6 @@ void CGame::init()
 	SpriteManagerC::CreateInstance();
 	LevelManagerC::CreateInstance();
 
-	InputManagerC::GetInstance()->init();
 	SpriteManagerC::GetInstance()->init();
 	LevelManagerC::GetInstance()->init(SpriteManagerC::GetInstance()->getMap());
 

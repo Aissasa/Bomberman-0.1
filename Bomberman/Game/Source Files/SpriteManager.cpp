@@ -62,7 +62,7 @@ void SpriteManagerC::renderSprites()
 	renderBasicMap();
 	renderItems();
 	renderPlayer();
-
+	renderBombs();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -115,7 +115,21 @@ void SpriteManagerC::renderItems()
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderPlayer()
 {
-	renderCharacter(&mPlayerCurrentSprite, mPlayerCurrentPosition);
+	mCurrentSpriteSheet = mMCSpriteSheet;
+	renderCharacter(&mPlayerRenderableSprite.sprite, mPlayerRenderableSprite.position);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::renderBombs()
+{
+	mCurrentSpriteSheet = mBombSpriteSheet;
+	uint16_t vectLength = (uint16_t)mBombsRenderableSpritesVect.size();
+	for (uint16_t i = 0; i < vectLength; i++)
+	{
+		RenderableSprite_t renderableSprite = mBombsRenderableSpritesVect.back();
+		renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
+		mBombsRenderableSpritesVect.pop_back();
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -156,7 +170,6 @@ void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer m
 void SpriteManagerC::renderCharacter(const Sprite_t* spriteToRender, const Coord2D & position)
 {
 	Sprite_t sprite = *spriteToRender;
-	mCurrentSpriteSheet = mMCSpriteSheet;
 	renderSingleSprite(sprite, position);
 }
 
@@ -239,8 +252,19 @@ Animation_t * SpriteManagerC::getAnimations(SpriteSheetType_t spshType)
 	}
 }
 
-void SpriteManagerC::setPlayerRendParameters(Sprite_t * sprite, Coord2D pos)
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::setPlayerRendParameters(const Sprite_t * sprite, Coord2D pos)
 {
-	mPlayerCurrentPosition = pos;
-	mPlayerCurrentSprite = *sprite;
+	mPlayerRenderableSprite.position = pos;
+	mPlayerRenderableSprite.sprite = *sprite;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::addBombToRender(const Sprite_t * sprite, Coord2D pos)
+{
+	RenderableSprite_t renderableSprite;
+	renderableSprite.sprite = *sprite;
+	renderableSprite.position = pos;
+
+	mBombsRenderableSpritesVect.push_back(renderableSprite);
 }

@@ -3,6 +3,7 @@
 #include "baseTypes.h"
 #include "GameDataStructures.h"
 #include "Player.h"
+#include "Bomb.h"
 
 
 class LevelManagerC
@@ -15,6 +16,12 @@ public:
 	void init(Map_t* currentMap);
 	void update(DWORD milliseconds);
 
+	void addBomb(BombC& bomb);
+	void addToTobeRemovedArray(BombC& bomb);
+
+	uint16_t getCurrentNumberBombs();
+	bool tileOccupiedByBomb(Coord2D tileCoor);
+
 private:
 
 	static LevelManagerC* sInstance;
@@ -23,7 +30,10 @@ private:
 	Map_t* mCurrentMap;
 	PlayerC* mPlayer;
 
+	Bombs_Vect_t mBombsVect;
+	Bombs_Vect_t mBombsToRemoveVect;
 	// todo add enemies
-	// bombs  : manage their own animation by calling the renderer(in their update that is called in this update)
+
+	void removeDestroyedBombs();
 
 };
