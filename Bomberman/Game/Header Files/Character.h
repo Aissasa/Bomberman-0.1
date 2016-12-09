@@ -53,6 +53,12 @@ protected:
 	CharacterMovement_t mCharacterMovement;
 
 	virtual void setAnimations() {};
+	virtual void updateMovementDirection() {};
+	virtual bool checkCollisions(DWORD milliseconds) { return true; };
+	virtual bool checkCollisionsWithBlocks(DWORD milliseconds) { return true; };
+	virtual bool checkCollisionsWithCharacters() { return true; };
+	virtual bool checkCollisionsBombs(DWORD milliseconds) { return true; };
+	virtual bool checkCollisionsWithBombsAE() { return true; };
 	virtual void updatePosition(DWORD milliseconds) {};
 	
 	void updateAnimation(DWORD milliseconds);

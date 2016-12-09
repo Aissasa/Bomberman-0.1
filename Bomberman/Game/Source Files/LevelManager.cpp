@@ -2,6 +2,7 @@
 #include "assert.h"
 #include "LevelManager.h"
 #include "LevelGenerator.h"
+#include "CollisionManager.h"
 
 LevelManagerC* LevelManagerC::sInstance = nullptr;
 
@@ -22,14 +23,17 @@ void LevelManagerC::init(Map_t* currentMap)
 	mCurrentMap = currentMap;
 
 	LevelGeneratorC::CreateInstance();
+	CollisionManagerC::CreateInstance();
+
 	LevelGeneratorC::GetInstance()->generateLevel(mCurrentMap);
+	CollisionManagerC::GetInstance()->init(mCurrentMap);
 
 	mPlayer = new PlayerC();
-	Coord2D coor;
-	coor.x = (float_t) mCurrentMap->playerSpawnTile.x * currentMap->tileWidth;
-	coor.y = (float_t) mCurrentMap->playerSpawnTile.y * currentMap->tileHeight;
+	Coord2D playerInitiCoor;
+	playerInitiCoor.x = (float_t) mCurrentMap->playerSpawnTile.x * currentMap->tileWidth;
+	playerInitiCoor.y = (float_t) mCurrentMap->playerSpawnTile.y * currentMap->tileHeight;
 
-	mPlayer->init(coor);
+	mPlayer->init(playerInitiCoor);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

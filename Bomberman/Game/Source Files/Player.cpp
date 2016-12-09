@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "SpriteManager.h"
+#include "CollisionManager.h"
 
 //---------------------------------------------------------------------------------------------------------------------
 void PlayerC::init(Coord2D initialCoor)
@@ -9,18 +10,32 @@ void PlayerC::init(Coord2D initialCoor)
 	mCurrentPosition = initialCoor;
 	setAnimations();
 
+	mPerks = (Perks_t*)malloc(sizeof(Perks_t));
+	mPerks->bombUp = 0;
+	mPerks->fire = 0;
+	mPerks->skate = 0;
+	mPerks->passBomb = false;
+	mPerks->passSoftBlocks = false;
+	mPerks->remote = false;
+
+	mCurrentDirection = { 0, 0 };
 	mCharacterMovement = { false, false, false, false };
+	mCanMoveHorizontally = true;
+	mCanMoveVertically = true;
 	mIsDying = false;
-	mCurrentMaxBombNumber = 1;
-	mBaseSpeed =(float_t) BASE_SPEED;
+
+	mBaseSpeed = (float_t)BASE_SPEED;
+	mBaseMaxBombNumber = 1;
+	mBaseBombRange = 1;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void PlayerC::update(DWORD milliseconds)
 {
-	// todo check col before update pos
 	if (!mIsDying)
 	{
+		updateMovementDirection();
+		checkCollisions(milliseconds);
 		updatePosition(milliseconds);
 	}
 
@@ -63,18 +78,64 @@ void PlayerC::setAnimations()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+void PlayerC::updateMovementDirection()
+{
+	mCurrentDirection = InputManagerC::GetInstance()->getPlayerDirection();
+
+	mCharacterMovement.goingLeft = mCurrentDirection.x < 0;
+	mCharacterMovement.goingRight = mCurrentDirection.x > 0;
+	mCharacterMovement.goingUp = mCurrentDirection.y > 0;
+	mCharacterMovement.goingDown = mCurrentDirection.y < 0;
+
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool PlayerC::checkCollisions(DWORD milliseconds)
+{
+	// todo add the other collisions logic
+	return checkCollisionsWithBlocks(milliseconds);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool PlayerC::checkCollisionsWithBlocks(DWORD milliseconds)
+{
+	Coord2D potentialPos = { mCurrentPosition.x + mCurrentDirection.x * mBaseSpeed * milliseconds / 10, mCurrentPosition.y + mCurrentDirection.y * mBaseSpeed * milliseconds / 10 };
+	mCanMoveHorizontally = !CollisionManagerC::GetInstance()->checkCharacterCollisionWithBlocks(potentialPos, {mCurrentDirection.x, 0});
+	mCanMoveVertically = !CollisionManagerC::GetInstance()->checkCharacterCollisionWithBlocks(potentialPos, { 0, mCurrentDirection.y });
+
+	return mCanMoveHorizontally && mCanMoveVertically;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool PlayerC::checkCollisionsWithCharacters()
+{
+	return true;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool PlayerC::checkCollisionsBombs(DWORD milliseconds)
+{
+	return true;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool PlayerC::checkCollisionsWithBombsAE()
+{
+	return true;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 void PlayerC::updatePosition(DWORD milliseconds)
 {
-	Coord2D direction = InputManagerC::GetInstance()->getPlayerDirection();
+	if (mCanMoveHorizontally)
+	{
+		mCurrentPosition.x += mCurrentDirection.x * mBaseSpeed * milliseconds / 10;
+	}
 
-	mCharacterMovement.goingLeft = direction.x < 0;
-	mCharacterMovement.goingRight = direction.x > 0;
-	mCharacterMovement.goingUp = direction.y > 0;
-	mCharacterMovement.goingDown = direction.y < 0;
-
-	mCurrentPosition.x += direction.x * mBaseSpeed * milliseconds/10;
-	mCurrentPosition.y += direction.y * mBaseSpeed * milliseconds/10;
-
+	if (mCanMoveVertically)
+	{
+		mCurrentPosition.y += mCurrentDirection.y * mBaseSpeed * milliseconds / 10;
+	}
 }
 
 // todo in death add delay to animation timer, and set dying to true

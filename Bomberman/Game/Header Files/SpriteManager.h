@@ -41,7 +41,6 @@ public:
 	void init();
 	void updateSprites(DWORD milliseconds);
 	void renderSprites();
-	void renderCharacter(const Sprite_t* spriteToRender ,const Coord2D& position);
 	void shutdown();
 
 	Map_t* getMap();
@@ -76,7 +75,10 @@ private:
 
 	void renderBasicMap();
 	void renderItems();
+	void renderPlayer();
+	// void render characters
 	void renderBasicMapTile(const TileCoor_t& tile, BasicMapLayer mapLayer);
+	void renderCharacter(const Sprite_t* spriteToRender, const Coord2D& position);
 	void renderSingleSprite(const Sprite_t& sprite, Coord2D pos);
 	void renderTexture(const VertexFormatPos3Tex2& texTopLeftQuadBottomRight, const VertexFormatPos3Tex2& texBottomLeftQuadBottom,
 							const VertexFormatPos3Tex2& texBottomRightQuadTopLeft, const VertexFormatPos3Tex2& texTopRightQuadTopRight);

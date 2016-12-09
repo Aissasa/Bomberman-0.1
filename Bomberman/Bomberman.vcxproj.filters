@@ -141,6 +141,9 @@
     <ClInclude Include="Game\Header Files\LevelGenerator.h">
       <Filter>Game\Header Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Header Files\CollisionManager.h">
+      <Filter>Game\Header Files\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Sources Files\openGLStuff.cpp">
@@ -210,6 +213,9 @@
       <Filter>Game\Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\LevelGenerator.cpp">
+      <Filter>Game\Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\CollisionManager.cpp">
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>

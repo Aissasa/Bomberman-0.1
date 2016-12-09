@@ -61,7 +61,8 @@ void SpriteManagerC::renderSprites()
 
 	renderBasicMap();
 	renderItems();
-	renderCharacter(&mPlayerCurrentSprite, mPlayerCurrentPosition);
+	renderPlayer();
+
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -112,6 +113,12 @@ void SpriteManagerC::renderItems()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::renderPlayer()
+{
+	renderCharacter(&mPlayerCurrentSprite, mPlayerCurrentPosition);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer mapLayer)
 {
 	uint32_t currentSpriteIndex;
@@ -148,11 +155,6 @@ void SpriteManagerC::renderBasicMapTile(const TileCoor_t & tile, BasicMapLayer m
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderCharacter(const Sprite_t* spriteToRender, const Coord2D & position)
 {
-	// draw a bg at that pos
-	mCurrentSpriteSheet = mPropsSpriteSheet;
-	Sprite_t sprt = mPropsSpriteSheet.sprites[(uint32_t)SpriteIndicesInSpriteSheet_t::greenBg];
-	renderSingleSprite(sprt, position);
-
 	Sprite_t sprite = *spriteToRender;
 	mCurrentSpriteSheet = mMCSpriteSheet;
 	renderSingleSprite(sprite, position);
@@ -164,6 +166,7 @@ void SpriteManagerC::renderSingleSprite(const Sprite_t& sprite, Coord2D pos)
 	glBindTexture(GL_TEXTURE_2D, sprite.textureMap);
 
 	glBegin(GL_QUADS);
+	
 
 	GLfloat texXUnit = mCurrentSpriteSheet.texXUnit;
 	GLfloat texYUnit = mCurrentSpriteSheet.texYUnit;

@@ -4,7 +4,6 @@
 #include "GameDataStructures.h"
 #include "Player.h"
 
-// todo add a level info struct
 
 class LevelManagerC
 {
@@ -22,10 +21,9 @@ private:
 	LevelManagerC() {};
 
 	Map_t* mCurrentMap;
-
 	PlayerC* mPlayer;
 
-	// enemies
+	// todo add enemies
 	// bombs  : manage their own animation by calling the renderer(in their update that is called in this update)
 
 };

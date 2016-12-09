@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Character.h"
+#include "baseTypes.h"
 
 #define BASE_SPEED 1.2
 #define SPEED_INCREMENT 0.4
@@ -32,9 +33,20 @@ public:
 private:
 
 	void setAnimations();
+	void updateMovementDirection();
+	bool checkCollisions(DWORD milliseconds);
+	bool checkCollisionsWithBlocks(DWORD milliseconds);
+	bool checkCollisionsWithCharacters();
+	bool checkCollisionsBombs(DWORD milliseconds);
+	bool checkCollisionsWithBombsAE();
 	void updatePosition(DWORD milliseconds);
-	//void updateAnimation(DWORD milliseconds);
-	//void animate(DWORD milliseconds, Animation_t& potentialAnimation);
 
-	uint32_t mCurrentMaxBombNumber;
+	Perks_t* mPerks;
+	uint16_t mBaseMaxBombNumber;
+	uint16_t mBaseBombRange;
+
+	Coord2D mCurrentDirection;
+
+	bool mCanMoveHorizontally;
+	bool mCanMoveVertically;
 };
