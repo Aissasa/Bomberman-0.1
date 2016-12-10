@@ -123,15 +123,27 @@ bool CollisionManagerC::checkCharacterCollisionWithBombs(const Coord2D & positio
 			break;
 		}
 	}
-
 	return colliding;
-
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool CollisionManagerC::checkCharacterCollisionWithBombAE(const Coord2D & position, const Bombs_AE_Ptr_Vect_t bombsAEVect)
+bool CollisionManagerC::checkCharacterCollisionWithBombsAE(const Coord2D & position, const Bombs_AE_Ptr_Vect_t bombsAEVect)
 {
-	return false;
+	bool colliding = false;
+
+	uint16_t vectLength = (uint16_t)bombsAEVect.size();
+	for (uint16_t i = 0; i < vectLength; i++)
+	{
+		BombAEC bombAE = *bombsAEVect[i];
+		colliding = boxCollision(position, bombAE.getPosition());
+
+		if (colliding)
+		{
+			break;
+		}
+	}
+
+	return colliding;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

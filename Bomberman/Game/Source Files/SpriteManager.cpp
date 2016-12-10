@@ -115,33 +115,48 @@ void SpriteManagerC::renderItems()
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderPlayer()
 {
-	mCurrentSpriteSheet = mMCSpriteSheet;
-	renderCharacter(&mPlayerRenderableSprite.sprite, mPlayerRenderableSprite.position);
+	if (!mPlayerRenderableSprite.empty())
+	{
+		mCurrentSpriteSheet = mMCSpriteSheet;
+		uint16_t vectLength = (uint16_t)mPlayerRenderableSprite.size();
+		for (uint16_t i = 0; i < vectLength; i++)
+		{
+			RenderableSprite_t renderableSprite = mPlayerRenderableSprite.back();
+			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
+			mPlayerRenderableSprite.pop_back();
+		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderBombs()
 {
-	mCurrentSpriteSheet = mBombSpriteSheet;
-	uint16_t vectLength = (uint16_t)mBombsRenderableSpritesVect.size();
-	for (uint16_t i = 0; i < vectLength; i++)
+	if (!mBombsRenderableSpritesVect.empty())
 	{
-		RenderableSprite_t renderableSprite = mBombsRenderableSpritesVect.back();
-		renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
-		mBombsRenderableSpritesVect.pop_back();
+		mCurrentSpriteSheet = mBombSpriteSheet;
+		uint16_t vectLength = (uint16_t)mBombsRenderableSpritesVect.size();
+		for (uint16_t i = 0; i < vectLength; i++)
+		{
+			RenderableSprite_t renderableSprite = mBombsRenderableSpritesVect.back();
+			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
+			mBombsRenderableSpritesVect.pop_back();
+		}
 	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void SpriteManagerC::renderBombsAE()
 {
-	mCurrentSpriteSheet = mBombAESpriteSheet;
-	uint16_t vectLength = (uint16_t)mBombsAERenderableSpritesVect.size();
-	for (uint16_t i = 0; i < vectLength; i++)
+	if (!mBombsAERenderableSpritesVect.empty())
 	{
-		RenderableSprite_t renderableSprite = mBombsAERenderableSpritesVect.back();
-		renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
-		mBombsAERenderableSpritesVect.pop_back();
+		mCurrentSpriteSheet = mBombAESpriteSheet;
+		uint16_t vectLength = (uint16_t)mBombsAERenderableSpritesVect.size();
+		for (uint16_t i = 0; i < vectLength; i++)
+		{
+			RenderableSprite_t renderableSprite = mBombsAERenderableSpritesVect.back();
+			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
+			mBombsAERenderableSpritesVect.pop_back();
+		}
 	}
 }
 
@@ -266,10 +281,13 @@ Animation_t * SpriteManagerC::getAnimations(SpriteSheetType_t spshType)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::setPlayerRendParameters(const Sprite_t * sprite, Coord2D pos)
+void SpriteManagerC::addPlayerToRender(const Sprite_t * sprite, Coord2D pos)
 {
-	mPlayerRenderableSprite.position = pos;
-	mPlayerRenderableSprite.sprite = *sprite;
+	RenderableSprite_t renderableSprite;
+	renderableSprite.sprite = *sprite;
+	renderableSprite.position = pos;
+
+	mPlayerRenderableSprite.push_back(renderableSprite);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

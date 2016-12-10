@@ -45,7 +45,7 @@ public:
 
 	Map_t* getMap();
 	Animation_t* getAnimations(SpriteSheetType_t spshType);
-	void setPlayerRendParameters(const Sprite_t* sprite, Coord2D pos);
+	void addPlayerToRender(const Sprite_t* sprite, Coord2D pos);
 	void addBombToRender(const Sprite_t* sprite, Coord2D pos);
 	void addBombAEToRender(const Sprite_t* sprite, Coord2D pos);
 
@@ -69,7 +69,7 @@ private:
 
 	Map_t mCurrentMap;
 
-	RenderableSprite_t mPlayerRenderableSprite;
+	Renderable_Sprite_Vect_t mPlayerRenderableSprite;
 	Renderable_Sprite_Vect_t mBombsRenderableSpritesVect;
 	Renderable_Sprite_Vect_t mBombsAERenderableSpritesVect;
 

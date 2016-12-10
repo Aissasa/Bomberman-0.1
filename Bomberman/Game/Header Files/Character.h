@@ -3,6 +3,9 @@
 #include "baseTypes.h"
 #include "RenderingDataStructures.h"
 
+#define DEATH_ANIMATION_DELAY 400
+#define DEATH_ANIMATION_TIME 250
+
 typedef struct CharacterAnimations
 {
 	Animation_t* idleUp;
@@ -45,6 +48,7 @@ protected:
 	Coord2D mCurrentPosition;
 	float_t mBaseSpeed;
 	bool mIsDying;
+	bool mIsDead;
 
 	CharacterAnimations_t* mCharAnimations;
 	Animation_t* mCurrentAnimation;
@@ -62,7 +66,8 @@ protected:
 	virtual void updatePosition(DWORD milliseconds) {};
 	
 	void updateAnimation(DWORD milliseconds);
-	void animate(DWORD milliseconds, Animation_t* potentialAnimation);
+	void doMovementAnimation(DWORD milliseconds, Animation_t* potentialAnimation);
+	void doDeathAnimation(DWORD milliseconds, Animation_t* potentialAnimation);
 	CharacterAnimations_t* createCharAnimations();
 	void populateAnimation(Animation_t* anim, const Animation_t& sourceAnim);
 

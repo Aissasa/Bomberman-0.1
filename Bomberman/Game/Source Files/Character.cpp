@@ -12,8 +12,9 @@ void CharacterC::updateAnimation(DWORD milliseconds)
 		if (mCurrentAnimation != mCharAnimations->death)
 		{
 			mCurrentAnimation = mCharAnimations->death;
+			mAnimationTimer = mCurrentAnimation->timeFromSpriteToSprite + DEATH_ANIMATION_DELAY;
 		}
-		animate(milliseconds, mCurrentAnimation);
+		doDeathAnimation(milliseconds, mCurrentAnimation);
 	}
 	else
 	{
@@ -22,25 +23,25 @@ void CharacterC::updateAnimation(DWORD milliseconds)
 		if (mCharacterMovement.goingLeft)
 		{
 			animated = true;
-			animate(milliseconds, mCharAnimations->walkLeft);
+			doMovementAnimation(milliseconds, mCharAnimations->walkLeft);
 		}
 
 		if (mCharacterMovement.goingRight)
 		{
 			animated = true;
-			animate(milliseconds, mCharAnimations->walkRight);
+			doMovementAnimation(milliseconds, mCharAnimations->walkRight);
 		}
 
 		if (mCharacterMovement.goingUp)
 		{
 			animated = true;
-			animate(milliseconds, mCharAnimations->walkUp);
+			doMovementAnimation(milliseconds, mCharAnimations->walkUp);
 		}
 
 		if (mCharacterMovement.goingDown)
 		{
 			animated = true;
-			animate(milliseconds, mCharAnimations->walkDown);
+			doMovementAnimation(milliseconds, mCharAnimations->walkDown);
 		}
 
 		if (!animated)
@@ -75,7 +76,7 @@ void CharacterC::updateAnimation(DWORD milliseconds)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void CharacterC::animate(DWORD milliseconds, Animation_t* potentialAnimation)
+void CharacterC::doMovementAnimation(DWORD milliseconds, Animation_t* potentialAnimation)
 {
 	if (mCurrentAnimation == potentialAnimation)
 	{
@@ -91,6 +92,22 @@ void CharacterC::animate(DWORD milliseconds, Animation_t* potentialAnimation)
 		mCurrentAnimation->currentSpriteIndex = 0;
 		mCurrentAnimation = potentialAnimation;
 		mAnimationTimer = mCurrentAnimation->timeFromSpriteToSprite;
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void CharacterC::doDeathAnimation(DWORD milliseconds, Animation_t * potentialAnimation)
+{
+	mAnimationTimer -= milliseconds;
+	if (mAnimationTimer <= 0)
+	{
+		if (mCurrentAnimation->currentSpriteIndex == mCurrentAnimation->numSprites - 1)
+		{
+			mIsDead = true;
+			return;
+		}
+		mAnimationTimer = mCurrentAnimation->timeFromSpriteToSprite;
+		mCurrentAnimation->currentSpriteIndex = (mCurrentAnimation->currentSpriteIndex + 1);
 	}
 }
 
@@ -120,11 +137,5 @@ void CharacterC::populateAnimation(Animation_t * anim, const Animation_t& source
 	anim->numSprites = sourceAnim.numSprites;
 	anim->sprites = sourceAnim.sprites;
 	anim->timeFromSpriteToSprite = sourceAnim.timeFromSpriteToSprite;
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-void CharacterC::render()
-{
-	SpriteManagerC::GetInstance()->setPlayerRendParameters(&(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
 }
 

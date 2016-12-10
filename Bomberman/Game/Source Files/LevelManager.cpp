@@ -226,7 +226,6 @@ void LevelManagerC::destroyVanishingBombsAE()
 				}
 			}
 		}
-
 		mVanishingBombsAEVect.clear();
 	}
 }

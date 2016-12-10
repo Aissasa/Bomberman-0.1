@@ -26,6 +26,7 @@ void PlayerC::init(Coord2D initialCoor)
 	mCanMoveHorizontally = true;
 	mCanMoveVertically = true;
 	mIsDying = false;
+	mIsDead = false;
 
 	mBaseSpeed = (float_t)BASE_SPEED;
 	mBaseMaxBombNumber = 1;
@@ -35,16 +36,25 @@ void PlayerC::init(Coord2D initialCoor)
 //---------------------------------------------------------------------------------------------------------------------
 void PlayerC::update(DWORD milliseconds)
 {
-	if (!mIsDying)
+	if (!mIsDead)
 	{
-		updateMovementDirection();
-		checkCollisions(milliseconds);
-		updatePosition(milliseconds);
-	}
+		if (!mIsDying)
+		{
+			updateMovementDirection();
+			checkCollisions(milliseconds);
+			updatePosition(milliseconds);
+			updateActions(milliseconds);
 
-	updateActions(milliseconds);
-	updateAnimation(milliseconds);
-	render();
+			mIsDying = checkCollisionsWithBombsAE();
+		}
+
+		updateAnimation(milliseconds);
+		render();
+	}
+	else
+	{
+		// restart game
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -93,6 +103,8 @@ void PlayerC::setAnimations()
 	populateAnimation(mCharAnimations->idleUp, mcAnimations[7]);
 	populateAnimation(mCharAnimations->walkUp, mcAnimations[8]);
 
+	mCharAnimations->death->timeFromSpriteToSprite = DEATH_ANIMATION_TIME;
+
 	mCurrentAnimation = mCharAnimations->idleDown;
 	mAnimationTimer = mCurrentAnimation->timeFromSpriteToSprite;
 }
@@ -112,7 +124,6 @@ void PlayerC::updateMovementDirection()
 //---------------------------------------------------------------------------------------------------------------------
 bool PlayerC::checkCollisions(DWORD milliseconds)
 {
-	// todo add the other collisions logic
 	checkCollisionsWithBlocks(milliseconds);
 	return checkCollisionsBombs(milliseconds);
 }
@@ -130,7 +141,7 @@ bool PlayerC::checkCollisionsWithBlocks(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 bool PlayerC::checkCollisionsWithCharacters()
 {
-	return true;
+	return false;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -150,7 +161,7 @@ bool PlayerC::checkCollisionsBombs(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 bool PlayerC::checkCollisionsWithBombsAE()
 {
-	return true;
+	return CollisionManagerC::GetInstance()->checkCharacterCollisionWithBombsAE(mCurrentPosition, LevelManagerC::GetInstance()->getBombsAEVect());
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -189,4 +200,9 @@ void PlayerC::updateActions(DWORD milliseconds)
 	}
 }
 
-// todo in death add delay to animation timer, and set dying to true
+//---------------------------------------------------------------------------------------------------------------------
+void CharacterC::render()
+{
+	SpriteManagerC::GetInstance()->addPlayerToRender(&(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
+}
+
