@@ -718,6 +718,9 @@
     {
       "Name": "Bomb_AE_Bottom",
       "Sprites": [
+        2,
+        1,
+        0,
         3,
         0,
         1,
@@ -727,6 +730,9 @@
     {
       "Name": "Bomb_AE_Center",
       "Sprites": [
+        6,
+        5,
+        4,
         7,
         4,
         5,
@@ -736,6 +742,9 @@
     {
       "Name": "Bomb_AE_Horiz",
       "Sprites": [
+        10,
+        9,
+        8,
         11,
         8,
         9,
@@ -745,6 +754,9 @@
     {
       "Name": "Bomb_AE_Left",
       "Sprites": [
+        14,
+        13,
+        12,
         15,
         12,
         13,
@@ -754,6 +766,9 @@
     {
       "Name": "Bomb_AE_Right",
       "Sprites": [
+        18,
+        17,
+        16,
         19,
         16,
         17,
@@ -763,6 +778,9 @@
     {
       "Name": "Bomb_AE_Top",
       "Sprites": [
+        22,
+        21,
+        20,
         23,
         20,
         21,
@@ -772,6 +790,9 @@
     {
       "Name": "Bomb_AE_Vert",
       "Sprites": [
+        26,
+        25,
+        24,
         27,
         24,
         25,

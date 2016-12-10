@@ -4,6 +4,7 @@
 #include "GameDataStructures.h"
 #include "Player.h"
 #include "Bomb.h"
+#include "BombAE.h"
 
 
 class LevelManagerC
@@ -17,8 +18,12 @@ public:
 	void update(DWORD milliseconds);
 
 	void addBomb(BombC& bomb);
-	void addToTobeRemovedArray(BombC& bomb);
+	void addToExplodingBombs(BombC& bomb);
 
+	void addToVanishingBombsAE(BombAEC* bombAE);
+
+	Bombs_Vect_t getBombsVect() { return mBombsVect; };
+	Bombs_AE_Ptr_Vect_t getBombsAEVect() { return mBombsAEVect; };
 	uint16_t getCurrentNumberBombs();
 	bool tileOccupiedByBomb(Coord2D tileCoor);
 
@@ -31,9 +36,15 @@ private:
 	PlayerC* mPlayer;
 
 	Bombs_Vect_t mBombsVect;
-	Bombs_Vect_t mBombsToRemoveVect;
+	Bombs_Vect_t mExplodingBombsVect;
+
+	Bombs_AE_Ptr_Vect_t mBombsAEVect;
+	Bombs_AE_Ptr_Vect_t mVanishingBombsAEVect;
 	// todo add enemies
 
-	void removeDestroyedBombs();
+	void explodeBombs();
+	void createBombAE(BombC& bomb);
+
+	void destroyVanishingBombsAE();
 
 };

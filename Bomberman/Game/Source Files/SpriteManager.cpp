@@ -32,7 +32,6 @@ void SpriteManagerC::init()
 	SpriteSheetParserC::CreateInstance();
 	MapParserC::CreateInstance();
 
-	// note adapt to the screen size when drawing sprites
 	/* load an image file directly as a new OpenGL texture */
 	mBaromSpriteTextureMap = SOIL_load_OGL_texture(BAROM_SPRITE_SHEET_PATH, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, NULL);
 	mBombSpriteTextureMap = SOIL_load_OGL_texture(BOMB_SPRITE_SHEET_PATH, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, NULL);
@@ -63,6 +62,7 @@ void SpriteManagerC::renderSprites()
 	renderItems();
 	renderPlayer();
 	renderBombs();
+	renderBombsAE();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -129,6 +129,19 @@ void SpriteManagerC::renderBombs()
 		RenderableSprite_t renderableSprite = mBombsRenderableSpritesVect.back();
 		renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
 		mBombsRenderableSpritesVect.pop_back();
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::renderBombsAE()
+{
+	mCurrentSpriteSheet = mBombAESpriteSheet;
+	uint16_t vectLength = (uint16_t)mBombsAERenderableSpritesVect.size();
+	for (uint16_t i = 0; i < vectLength; i++)
+	{
+		RenderableSprite_t renderableSprite = mBombsAERenderableSpritesVect.back();
+		renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
+		mBombsAERenderableSpritesVect.pop_back();
 	}
 }
 
@@ -267,4 +280,14 @@ void SpriteManagerC::addBombToRender(const Sprite_t * sprite, Coord2D pos)
 	renderableSprite.position = pos;
 
 	mBombsRenderableSpritesVect.push_back(renderableSprite);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void SpriteManagerC::addBombAEToRender(const Sprite_t * sprite, Coord2D pos)
+{
+	RenderableSprite_t renderableSprite;
+	renderableSprite.sprite = *sprite;
+	renderableSprite.position = pos;
+
+	mBombsAERenderableSpritesVect.push_back(renderableSprite);
 }

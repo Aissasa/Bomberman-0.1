@@ -4,8 +4,9 @@
 #include "LevelManager.h"
 
 uint16_t BombC::sCurrentId = 0;
+
 //---------------------------------------------------------------------------------------------------------------------
-BombC::BombC(Coord2D position, uint16_t range, bool remoteControlled)
+void BombC::init(Coord2D position, uint16_t range, bool remoteControlled)
 {
 	mPosition = position;
 	mRange = range;
@@ -19,6 +20,8 @@ BombC::BombC(Coord2D position, uint16_t range, bool remoteControlled)
 	mAnimationTimer = mAnimation->timeFromSpriteToSprite;
 
 	mId = sCurrentId++;
+
+	setAfterEffectsAnimations();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -45,9 +48,52 @@ void BombC::render()
 //---------------------------------------------------------------------------------------------------------------------
 void BombC::explode()
 {
-	// createae, and send them to lvl manager
-	LevelManagerC::GetInstance()->addToTobeRemovedArray(*this);
+	LevelManagerC::GetInstance()->addToExplodingBombs(*this);
+}
 
+//---------------------------------------------------------------------------------------------------------------------
+Animation BombC::getAfterEffectAnimation(BombAEType_t aeType)
+{
+	switch (aeType)
+	{
+		case BombAEType_t::Bottom:
+			return *mAfterEffectAnimations.bottomAE;
+		
+		case BombAEType_t::Center:
+			return *mAfterEffectAnimations.centerAE;
+
+		case BombAEType_t::Horizontal:
+			return *mAfterEffectAnimations.horizontalAE;
+
+		case BombAEType_t::Left:
+			return *mAfterEffectAnimations.leftAE;
+
+		case BombAEType_t::Right:
+			return *mAfterEffectAnimations.rightAE;
+
+		case BombAEType_t::Top:
+			return *mAfterEffectAnimations.topAE;
+
+		case BombAEType_t::Vertical:
+			return *mAfterEffectAnimations.verticalAE;
+
+		default:
+			return *mAfterEffectAnimations.centerAE;
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void BombC::setAfterEffectsAnimations()
+{
+	Animation_t* aeAnimations = SpriteManagerC::GetInstance()->getAnimations(SpriteSheetType_t::BombAE);
+
+	mAfterEffectAnimations.bottomAE = &aeAnimations[0];
+	mAfterEffectAnimations.centerAE = &aeAnimations[1];
+	mAfterEffectAnimations.horizontalAE = &aeAnimations[2];
+	mAfterEffectAnimations.leftAE = &aeAnimations[3];
+	mAfterEffectAnimations.rightAE = &aeAnimations[4];
+	mAfterEffectAnimations.topAE = &aeAnimations[5];
+	mAfterEffectAnimations.verticalAE = &aeAnimations[6];
 }
 
 //---------------------------------------------------------------------------------------------------------------------

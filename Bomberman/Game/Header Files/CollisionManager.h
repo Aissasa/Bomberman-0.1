@@ -2,6 +2,8 @@
 
 #include "baseTypes.h"
 #include "GameDataStructures.h"
+#include "Bomb.h"
+#include "BombAE.h"
 
 class CollisionManagerC
 {
@@ -14,11 +16,11 @@ public:
 	void init(Map_t* map) { mCurrentMap = map; };
 
 	bool checkCharacterCollisionWithBlocks(const Coord2D& position, const Coord2D& direction);
-	bool checkCharacterCollisionWithBombs(const Coord2D& position, const Coord2D& direction);
+	bool checkCharacterCollisionWithBombs(const Coord2D& position, const Coord2D& direction, Bombs_Vect_t& bombsVect);
 	bool checkCharacterCollisionWithCharacters(const Coord2D& position);
-	bool checkCharacterCollisionWithBombAE(const Coord2D& position);
+	bool checkCharacterCollisionWithBombAE(const Coord2D& position, const Bombs_AE_Ptr_Vect_t bombsAEVect);
 
-	Coord2D getTilePosition(const TileCoor_t& tile);
+	Coord2D getPositionFromTileCoor(const TileCoor_t& tile);
 	TileCoor_t getTileCoorFromPosition(const Coord2D& coor);
 
 private:

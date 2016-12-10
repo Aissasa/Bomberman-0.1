@@ -54,11 +54,12 @@ void PlayerC::placeBomb()
 		mCurrentPosition.y + mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex].height / 2 };
 
 	TileCoor_t bombTile = CollisionManagerC::GetInstance()->getTileCoorFromPosition(center);
-	Coord2D tileCoor = CollisionManagerC::GetInstance()->getTilePosition(bombTile);
+	Coord2D tileCoor = CollisionManagerC::GetInstance()->getPositionFromTileCoor(bombTile);
 	bool tileOccupied = LevelManagerC::GetInstance()->tileOccupiedByBomb(tileCoor);
 	if (LevelManagerC::GetInstance()->getCurrentNumberBombs() < mBaseMaxBombNumber + mPerks->bombUp && !tileOccupied)
 	{
-		BombC* newBomb = new BombC(tileCoor, mBaseBombRange + mPerks->fire, mPerks->remote);
+		BombC* newBomb = new BombC();
+		newBomb->init(tileCoor, mBaseBombRange + mPerks->fire, mPerks->remote);
 
 		LevelManagerC::GetInstance()->addBomb(*newBomb);
 	}
@@ -112,7 +113,8 @@ void PlayerC::updateMovementDirection()
 bool PlayerC::checkCollisions(DWORD milliseconds)
 {
 	// todo add the other collisions logic
-	return checkCollisionsWithBlocks(milliseconds);
+	checkCollisionsWithBlocks(milliseconds);
+	return checkCollisionsBombs(milliseconds);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -134,7 +136,15 @@ bool PlayerC::checkCollisionsWithCharacters()
 //---------------------------------------------------------------------------------------------------------------------
 bool PlayerC::checkCollisionsBombs(DWORD milliseconds)
 {
-	return true;
+	Coord2D potentialPos = { mCurrentPosition.x + mCurrentDirection.x * mBaseSpeed * milliseconds / 10, mCurrentPosition.y + mCurrentDirection.y * mBaseSpeed * milliseconds / 10 };
+	bool canMoveHorizontally = !CollisionManagerC::GetInstance()->checkCharacterCollisionWithBombs(potentialPos, { mCurrentDirection.x, 0 }, LevelManagerC::GetInstance()->getBombsVect());
+	bool canMoveVertically = !CollisionManagerC::GetInstance()->checkCharacterCollisionWithBombs(potentialPos, { 0, mCurrentDirection.y }, LevelManagerC::GetInstance()->getBombsVect());
+
+	mCanMoveHorizontally = mCanMoveHorizontally && canMoveHorizontally;
+	mCanMoveVertically = mCanMoveVertically && canMoveVertically;
+
+	return mCanMoveHorizontally && mCanMoveVertically;
+
 }
 
 //---------------------------------------------------------------------------------------------------------------------

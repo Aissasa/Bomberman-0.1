@@ -39,7 +39,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 		uint32_t spriteIndex = mCurrentMap->blocksLayer[targetTile.x][targetTile.y];
 		if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::solidBlock || spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
 		{
-			colliding = boxCollision(position, getTilePosition(targetTile));
+			colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
 		}
 	}
 	else
@@ -81,7 +81,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 			uint32_t spriteIndex = mCurrentMap->blocksLayer[targetTile.x][targetTile.y];
 			if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::solidBlock || spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
 			{
-				colliding = boxCollision(position, getTilePosition(targetTile));
+				colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
 				if (colliding)
 				{
 					break;
@@ -95,6 +95,46 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+bool CollisionManagerC::checkCharacterCollisionWithBombs(const Coord2D & position, const Coord2D & direction, Bombs_Vect_t & bombsVect)
+{
+	if (direction.x == 0 && direction.y == 0)
+	{
+		return false;
+	}
+
+	bool colliding = false;
+
+	Coord2D center = { position.x + mCurrentMap->tileWidth / 2, position.y + mCurrentMap->tileHeight / 2 };
+	TileCoor_t charTile = getTileCoorFromPosition(center);
+
+	// note add cutting corners logic here
+
+	TileCoor_t targetTile = charTile;
+	targetTile.x += (int16_t)direction.x;
+	targetTile.y += (int16_t)direction.y;
+
+	uint16_t vectLength = (uint16_t)bombsVect.size();
+	for (uint16_t i = 0; i < vectLength; i++)
+	{
+		TileCoor_t bombTile = getTileCoorFromPosition(bombsVect[i].getPosition());
+		if (bombTile.x == targetTile.x && bombTile.y == targetTile.y)
+		{
+			colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
+			break;
+		}
+	}
+
+	return colliding;
+
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool CollisionManagerC::checkCharacterCollisionWithBombAE(const Coord2D & position, const Bombs_AE_Ptr_Vect_t bombsAEVect)
+{
+	return false;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 bool CollisionManagerC::boxCollision(const Coord2D & source, const Coord2D & target)
 {
 	return source.x + sMargin < target.x + mCurrentMap->tileWidth &&
@@ -104,7 +144,7 @@ bool CollisionManagerC::boxCollision(const Coord2D & source, const Coord2D & tar
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-Coord2D CollisionManagerC::getTilePosition(const TileCoor_t & tile)
+Coord2D CollisionManagerC::getPositionFromTileCoor(const TileCoor_t & tile)
 {
 	Coord2D pos;
 	pos.x = (float_t)tile.x * mCurrentMap->tileWidth;

@@ -18,6 +18,7 @@
     <ClInclude Include="Game\Header Files\Barom.h" />
     <ClInclude Include="Game\Header Files\baseTypes.h" />
     <ClInclude Include="Game\Header Files\Bomb.h" />
+    <ClInclude Include="Game\Header Files\BombAE.h" />
     <ClInclude Include="Game\Header Files\Character.h" />
     <ClInclude Include="Game\Header Files\CollisionManager.h" />
     <ClInclude Include="Game\Header Files\Enemy.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="Framework\Sources Files\openGLStuff.cpp" />
     <ClCompile Include="Game\Source Files\Barom.cpp" />
     <ClCompile Include="Game\Source Files\Bomb.cpp" />
+    <ClCompile Include="Game\Source Files\BombAE.cpp" />
     <ClCompile Include="Game\Source Files\Character.cpp" />
     <ClCompile Include="Game\Source Files\CollisionManager.cpp" />
     <ClCompile Include="Game\Source Files\Enemy.cpp" />

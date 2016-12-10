@@ -47,6 +47,7 @@ public:
 	Animation_t* getAnimations(SpriteSheetType_t spshType);
 	void setPlayerRendParameters(const Sprite_t* sprite, Coord2D pos);
 	void addBombToRender(const Sprite_t* sprite, Coord2D pos);
+	void addBombAEToRender(const Sprite_t* sprite, Coord2D pos);
 
 private:
 	static SpriteManagerC *sInstance;
@@ -70,6 +71,7 @@ private:
 
 	RenderableSprite_t mPlayerRenderableSprite;
 	Renderable_Sprite_Vect_t mBombsRenderableSpritesVect;
+	Renderable_Sprite_Vect_t mBombsAERenderableSpritesVect;
 
 	DWORD mLastUpdateTime;
 	DWORD mCurrentTime;
@@ -79,6 +81,7 @@ private:
 	void renderPlayer(); // note replace render enemies and player with render char where u pass an enum
 	// void render enemies
 	void renderBombs();
+	void renderBombsAE();
 	void renderBasicMapTile(const TileCoor_t& tile, BasicMapLayer mapLayer);
 	void renderCharacter(const Sprite_t* spriteToRender, const Coord2D& position);
 	void renderSingleSprite(const Sprite_t& sprite, Coord2D pos);
