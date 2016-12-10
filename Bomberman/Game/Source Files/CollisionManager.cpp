@@ -3,6 +3,8 @@
 CollisionManagerC* CollisionManagerC::sInstance = nullptr;
 const int16_t CollisionManagerC::sMarginForBlocksCol = 3; // collision margin with the blocks
 const int16_t CollisionManagerC::sMarginForBombAECol = 8; // collision margin with the bombAE
+const int16_t CollisionManagerC::sMarginForPerksCol = 10; // collision margin with the perk
+const int16_t CollisionManagerC::sMarginForDoorCol = 20; // collision margin with the door
 
 //---------------------------------------------------------------------------------------------------------------------
 CollisionManagerC * CollisionManagerC::CreateInstance()
@@ -145,6 +147,34 @@ bool CollisionManagerC::checkCharacterCollisionWithBombsAE(const Coord2D & posit
 	}
 
 	return colliding;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool CollisionManagerC::checkCharacterCollisionWithDoor(const Coord2D & position)
+{
+	bool collided = false;
+
+	uint32_t index = mCurrentMap->blocksLayer[mCurrentMap->doorTile.tileCoor.x][mCurrentMap->doorTile.tileCoor.y];
+	if (index == (uint32_t) SpriteIndicesInMap_t::none)
+	{
+		collided = boxCollision(position, getPositionFromTileCoor(mCurrentMap->doorTile.tileCoor), sMarginForDoorCol);
+	}
+
+	return collided;
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+bool CollisionManagerC::checkCharacterCollisionWithPerk(const Coord2D & position)
+{
+	bool collided = false;
+
+	uint32_t index = mCurrentMap->blocksLayer[mCurrentMap->perkTile.tileCoor.x][mCurrentMap->perkTile.tileCoor.y];
+	if (index == (uint32_t)SpriteIndicesInMap_t::none)
+	{
+		collided = boxCollision(position, getPositionFromTileCoor(mCurrentMap->perkTile.tileCoor), sMarginForPerksCol);
+	}
+
+	return collided;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

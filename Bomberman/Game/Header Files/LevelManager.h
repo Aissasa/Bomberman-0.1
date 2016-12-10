@@ -7,6 +7,15 @@
 #include "BombAE.h"
 #include "FadingSoftBlock.h"
 
+typedef enum class LevelStates
+{
+	Play,
+	Pause,
+	Cleared,
+	Failed
+}LevelStates_t;
+
+
 class LevelManagerC
 {
 public:
@@ -36,8 +45,12 @@ private:
 	static LevelManagerC* sInstance;
 	LevelManagerC() {};
 
+	LevelStates_t mCurrentLevelState;
+
 	Map_t* mCurrentMap;
 	PlayerC* mPlayer;
+
+	bool mPerkConsumed;
 
 	Bombs_Vect_t mBombsVect;
 	Bombs_Vect_t mExplodingBombsVect;
@@ -48,6 +61,11 @@ private:
 	Fading_SoftBlock_Ptr_Vect_t mFadingSoftBlocksVect;
 	Fading_SoftBlock_Ptr_Vect_t mDestroyedSoftBlocksVect;
 	// todo add enemies
+
+	void handlePlayState(DWORD milliseconds);
+	void handlePauseState(DWORD milliseconds);
+	void handleClearedState(DWORD milliseconds);
+	void handleFailedState(DWORD milliseconds);
 
 	void explodeBombs();
 	void createBombAE(BombC& bomb);

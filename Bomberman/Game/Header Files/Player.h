@@ -31,6 +31,8 @@ public:
 	void placeBomb();
 	void triggerBombs();
 
+	void addPerk(uint32_t perk);
+
 private:
 
 	void setAnimations();

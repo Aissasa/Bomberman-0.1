@@ -29,45 +29,40 @@ void LevelManagerC::init(Map_t* currentMap)
 	LevelGeneratorC::GetInstance()->generateLevel(mCurrentMap);
 	CollisionManagerC::GetInstance()->init(mCurrentMap);
 
+	mPerkConsumed = false;
+
 	mPlayer = new PlayerC();
 	Coord2D playerInitiCoor;
 	playerInitiCoor.x = (float_t)mCurrentMap->playerSpawnTile.x * currentMap->tileWidth;
 	playerInitiCoor.y = (float_t)mCurrentMap->playerSpawnTile.y * currentMap->tileHeight;
 
 	mPlayer->init(playerInitiCoor);
+
+	mCurrentLevelState = LevelStates_t::Play;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void LevelManagerC::update(DWORD milliseconds)
 {
-	mPlayer->update(milliseconds);
-
-	// update fading blocks
-	uint16_t fadingSoftBlocksVectLength = (uint16_t)mFadingSoftBlocksVect.size();
-	for (uint16_t i = 0; i < fadingSoftBlocksVectLength; i++)
+	switch (mCurrentLevelState)
 	{
-		FadingSoftBlockC* currentFadingSoftBlock = mFadingSoftBlocksVect[i];
-		currentFadingSoftBlock->update(milliseconds);
-	}
+		case LevelStates_t::Play:
+			handlePlayState(milliseconds);
+			break;
 
-	// update bombsAE
-	uint16_t bombsAEVectLength = (uint16_t)mBombsAEVect.size();
-	for (uint16_t i = 0; i < bombsAEVectLength; i++)
-	{
-		BombAEC* currentBombAE = mBombsAEVect[i];
-		currentBombAE->update(milliseconds);
-	}
+		case LevelStates_t::Pause:
+			handlePauseState(milliseconds);
+			break;
 
-	// update bombs
-	uint16_t bombsVectLength = (uint16_t)mBombsVect.size();
-	for (uint16_t i = 0; i < bombsVectLength; i++)
-	{
-		mBombsVect[i].update(milliseconds);
-	}
+		case LevelStates_t::Cleared:
+			handleClearedState(milliseconds);
+			break;
 
-	explodeBombs();
-	destroyVanishingBombsAE();
-	destroyFadingBlocks();
+		case LevelStates_t::Failed:
+			handleFailedState(milliseconds);
+			break;
+
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -124,6 +119,72 @@ bool LevelManagerC::tileOccupiedByBomb(Coord2D tileCoor)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::handlePlayState(DWORD milliseconds)
+{
+	if (mPlayer->getIsDead())
+	{
+		mCurrentLevelState = LevelStates_t::Failed;
+		return;
+	}
+
+	if (CollisionManagerC::GetInstance()->checkCharacterCollisionWithDoor(mPlayer->getCurrentPostion()))
+	{
+		mCurrentLevelState = LevelStates_t::Cleared;
+		return;
+	}
+
+	mPlayer->update(milliseconds);
+
+	if (!mPerkConsumed && CollisionManagerC::GetInstance()->checkCharacterCollisionWithPerk(mPlayer->getCurrentPostion()))
+	{
+		mPerkConsumed = true;
+		mPlayer->addPerk(mCurrentMap->perkTile.spriteIndex);
+	}
+
+	// update fading blocks
+	uint16_t fadingSoftBlocksVectLength = (uint16_t)mFadingSoftBlocksVect.size();
+	for (uint16_t i = 0; i < fadingSoftBlocksVectLength; i++)
+	{
+		FadingSoftBlockC* currentFadingSoftBlock = mFadingSoftBlocksVect[i];
+		currentFadingSoftBlock->update(milliseconds);
+	}
+
+	// update bombsAE
+	uint16_t bombsAEVectLength = (uint16_t)mBombsAEVect.size();
+	for (uint16_t i = 0; i < bombsAEVectLength; i++)
+	{
+		BombAEC* currentBombAE = mBombsAEVect[i];
+		currentBombAE->update(milliseconds);
+	}
+
+	// update bombs
+	uint16_t bombsVectLength = (uint16_t)mBombsVect.size();
+	for (uint16_t i = 0; i < bombsVectLength; i++)
+	{
+		mBombsVect[i].update(milliseconds);
+	}
+
+	explodeBombs();
+	destroyVanishingBombsAE();
+	destroyFadingBlocks();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::handlePauseState(DWORD milliseconds)
+{
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::handleClearedState(DWORD milliseconds)
+{
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::handleFailedState(DWORD milliseconds)
+{
+}
+
+//---------------------------------------------------------------------------------------------------------------------
 void LevelManagerC::explodeBombs()
 {
 	if (!mExplodingBombsVect.empty())
@@ -170,6 +231,7 @@ void LevelManagerC::createBombAE(BombC & bomb)
 		// right
 		if (!rightIsDone)
 		{
+			tempTile = centerTile;
 			tempTile.x += tempRange;
 			if (tempRange<bomb.getRange())
 			{

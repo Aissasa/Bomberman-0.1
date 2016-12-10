@@ -53,7 +53,7 @@ void PlayerC::update(DWORD milliseconds)
 	}
 	else
 	{
-		// restart game
+		// todo restart game
 	}
 }
 
@@ -80,7 +80,38 @@ void PlayerC::triggerBombs()
 {
 	if (mPerks->remote)
 	{
-		// call lvl manager to explode all of the current bombs
+		// todo call lvl manager to explode all of the current bombs
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void PlayerC::addPerk(uint32_t index)
+{
+	switch (index)
+	{
+		case (uint32_t)PerksIndicesInSpriteSheet_t::bombUp:
+			mPerks->bombUp++;
+			break;
+
+		case (uint32_t)PerksIndicesInSpriteSheet_t::fire:
+			mPerks->fire++;
+			break;
+
+		case (uint32_t)PerksIndicesInSpriteSheet_t::passBomb:
+			mPerks->passBomb = true;
+			break;
+
+		case (uint32_t)PerksIndicesInSpriteSheet_t::passSoftBlock:
+			mPerks->passSoftBlocks = true;
+			break;
+
+		case (uint32_t)PerksIndicesInSpriteSheet_t::remote:
+			mPerks->remote = true;
+			break;
+
+		case (uint32_t)PerksIndicesInSpriteSheet_t::skate:
+			mPerks->skate++;
+			break;
 	}
 }
 
@@ -169,12 +200,12 @@ void PlayerC::updatePosition(DWORD milliseconds)
 {
 	if (mCanMoveHorizontally)
 	{
-		mCurrentPosition.x += mCurrentDirection.x * mBaseSpeed * milliseconds / 10;
+		mCurrentPosition.x += mCurrentDirection.x * (mBaseSpeed + (mPerks->skate * (float_t)SPEED_INCREMENT)) * milliseconds / 10;
 	}
 
 	if (mCanMoveVertically)
 	{
-		mCurrentPosition.y += mCurrentDirection.y * mBaseSpeed * milliseconds / 10;
+		mCurrentPosition.y += mCurrentDirection.y * (mBaseSpeed + (mPerks->skate * (float_t)SPEED_INCREMENT)) * milliseconds / 10;
 	}
 }
 

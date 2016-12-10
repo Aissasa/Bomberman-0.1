@@ -42,6 +42,7 @@ public:
 	virtual void update(DWORD milliseconds) {};
 
 	Coord2D getCurrentPostion() { return mCurrentPosition; };
+	bool getIsDead() { return mIsDead; };
 
 protected:
 	
