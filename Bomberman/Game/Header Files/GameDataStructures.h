@@ -68,6 +68,7 @@ typedef enum class SpriteIndicesInSpriteSheet
 
 typedef enum class SpriteIndicesInMap
 {
+	none = 0,
 	door = 3,
 	softBlock = 10,
 	solidBlock = 17,

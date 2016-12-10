@@ -25,10 +25,11 @@ public:
 
 private:
 	static CollisionManagerC* sInstance;
-	static const uint32_t sMargin;
+	static const int16_t sMarginForBlocksCol;
+	static const int16_t sMarginForBombAECol;
 	CollisionManagerC() {};
 	Map_t* mCurrentMap;
 
-	bool boxCollision(const Coord2D& source, const Coord2D& target);
+	bool boxCollision(const Coord2D& source, const Coord2D& target, int16_t toleranceMargin);
 
 };

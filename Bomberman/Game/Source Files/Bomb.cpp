@@ -42,7 +42,7 @@ void BombC::update(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 void BombC::render()
 {
-	SpriteManagerC::GetInstance()->addBombToRender(&mAnimation->sprites[mAnimation->currentSpriteIndex], mPosition);
+	SpriteManagerC::GetInstance()->addToRender(RenderableSpriteType_t::Bomb ,&mAnimation->sprites[mAnimation->currentSpriteIndex], mPosition);
 }
 
 //---------------------------------------------------------------------------------------------------------------------

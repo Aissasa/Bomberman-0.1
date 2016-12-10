@@ -60,9 +60,10 @@ void SpriteManagerC::renderSprites()
 
 	renderBasicMap();
 	renderItems();
-	renderPlayer();
-	renderBombs();
-	renderBombsAE();
+	renderObject(mPlayerRenderableSpritesVect, mMCSpriteSheet); 	//render Player
+	renderObject(mBombsRenderableSpritesVect, mBombSpriteSheet);	//render Bombs
+	renderObject(mBombsAERenderableSpritesVect, mBombAESpriteSheet);	//render BombsAE
+	renderObject(mFadingSoftBlocksRenderableSpritesVect, mPropsSpriteSheet);	//render FadingTiles
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -113,49 +114,17 @@ void SpriteManagerC::renderItems()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderPlayer()
+void SpriteManagerC::renderObject(Renderable_Sprite_Vect_t & vect, SpriteSheet_t & spriteSheet)
 {
-	if (!mPlayerRenderableSprite.empty())
+	if (!vect.empty())
 	{
-		mCurrentSpriteSheet = mMCSpriteSheet;
-		uint16_t vectLength = (uint16_t)mPlayerRenderableSprite.size();
+		mCurrentSpriteSheet = spriteSheet;
+		uint16_t vectLength = (uint16_t)vect.size();
 		for (uint16_t i = 0; i < vectLength; i++)
 		{
-			RenderableSprite_t renderableSprite = mPlayerRenderableSprite.back();
+			RenderableSprite_t renderableSprite = vect.back();
 			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
-			mPlayerRenderableSprite.pop_back();
-		}
-	}
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderBombs()
-{
-	if (!mBombsRenderableSpritesVect.empty())
-	{
-		mCurrentSpriteSheet = mBombSpriteSheet;
-		uint16_t vectLength = (uint16_t)mBombsRenderableSpritesVect.size();
-		for (uint16_t i = 0; i < vectLength; i++)
-		{
-			RenderableSprite_t renderableSprite = mBombsRenderableSpritesVect.back();
-			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
-			mBombsRenderableSpritesVect.pop_back();
-		}
-	}
-}
-
-//---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::renderBombsAE()
-{
-	if (!mBombsAERenderableSpritesVect.empty())
-	{
-		mCurrentSpriteSheet = mBombAESpriteSheet;
-		uint16_t vectLength = (uint16_t)mBombsAERenderableSpritesVect.size();
-		for (uint16_t i = 0; i < vectLength; i++)
-		{
-			RenderableSprite_t renderableSprite = mBombsAERenderableSpritesVect.back();
-			renderSingleSprite(renderableSprite.sprite, renderableSprite.position);
-			mBombsAERenderableSpritesVect.pop_back();
+			vect.pop_back();
 		}
 	}
 }
@@ -281,31 +250,31 @@ Animation_t * SpriteManagerC::getAnimations(SpriteSheetType_t spshType)
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::addPlayerToRender(const Sprite_t * sprite, Coord2D pos)
+void SpriteManagerC::addToRender(RenderableSpriteType_t type, const Sprite_t * sprite, Coord2D pos)
 {
 	RenderableSprite_t renderableSprite;
 	renderableSprite.sprite = *sprite;
 	renderableSprite.position = pos;
 
-	mPlayerRenderableSprite.push_back(renderableSprite);
-}
+	switch (type)
+	{
+		case RenderableSpriteType_t::Bomb:
+			mBombsRenderableSpritesVect.push_back(renderableSprite);
+			break;
 
-//---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::addBombToRender(const Sprite_t * sprite, Coord2D pos)
-{
-	RenderableSprite_t renderableSprite;
-	renderableSprite.sprite = *sprite;
-	renderableSprite.position = pos;
+		case RenderableSpriteType_t::BombAE:
+			mBombsAERenderableSpritesVect.push_back(renderableSprite);
+			break;
 
-	mBombsRenderableSpritesVect.push_back(renderableSprite);
-}
+		case RenderableSpriteType_t::FadingBlock:
+			mFadingSoftBlocksRenderableSpritesVect.push_back(renderableSprite);
+			break;
 
-//---------------------------------------------------------------------------------------------------------------------
-void SpriteManagerC::addBombAEToRender(const Sprite_t * sprite, Coord2D pos)
-{
-	RenderableSprite_t renderableSprite;
-	renderableSprite.sprite = *sprite;
-	renderableSprite.position = pos;
+		case RenderableSpriteType_t::Player:
+			mPlayerRenderableSpritesVect.push_back(renderableSprite);
+			break;
 
-	mBombsAERenderableSpritesVect.push_back(renderableSprite);
+		default:
+			break;
+	}
 }

@@ -203,6 +203,6 @@ void PlayerC::updateActions(DWORD milliseconds)
 //---------------------------------------------------------------------------------------------------------------------
 void CharacterC::render()
 {
-	SpriteManagerC::GetInstance()->addPlayerToRender(&(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
+	SpriteManagerC::GetInstance()->addToRender(RenderableSpriteType_t::Player, &(mCurrentAnimation->sprites[mCurrentAnimation->currentSpriteIndex]), mCurrentPosition);
 }
 

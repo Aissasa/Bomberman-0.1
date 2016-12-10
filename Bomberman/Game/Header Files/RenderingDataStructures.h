@@ -52,4 +52,15 @@ typedef struct SpriteSheet
 
 }SpriteSheet_t;
 
+typedef enum class RenderableSpriteType
+{
+	Player,
+	Bomb,
+	BombAE,
+	FadingBlock
+
+}RenderableSpriteType_t;
+
+
+
 typedef std::vector<RenderableSprite_t> Renderable_Sprite_Vect_t;

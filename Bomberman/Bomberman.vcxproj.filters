@@ -126,6 +126,9 @@
     <ClInclude Include="Game\Header Files\BombAE.h">
       <Filter>Game\Header Files\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Header Files\FadingSoftBlock.h">
+      <Filter>Game\Header Files\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Sources Files\openGLStuff.cpp">
@@ -183,6 +186,9 @@
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\BombAE.cpp">
+      <Filter>Game\Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source Files\FadingSoftBlock.cpp">
       <Filter>Game\Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>

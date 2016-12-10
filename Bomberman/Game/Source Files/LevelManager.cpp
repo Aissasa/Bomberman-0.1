@@ -42,13 +42,23 @@ void LevelManagerC::update(DWORD milliseconds)
 {
 	mPlayer->update(milliseconds);
 
+	// update fading blocks
+	uint16_t fadingSoftBlocksVectLength = (uint16_t)mFadingSoftBlocksVect.size();
+	for (uint16_t i = 0; i < fadingSoftBlocksVectLength; i++)
+	{
+		FadingSoftBlockC* currentFadingSoftBlock = mFadingSoftBlocksVect[i];
+		currentFadingSoftBlock->update(milliseconds);
+	}
+
+	// update bombsAE
 	uint16_t bombsAEVectLength = (uint16_t)mBombsAEVect.size();
 	for (uint16_t i = 0; i < bombsAEVectLength; i++)
 	{
-		BombAEC* currentBomb = mBombsAEVect[i];
-		currentBomb->update(milliseconds);
+		BombAEC* currentBombAE = mBombsAEVect[i];
+		currentBombAE->update(milliseconds);
 	}
 
+	// update bombs
 	uint16_t bombsVectLength = (uint16_t)mBombsVect.size();
 	for (uint16_t i = 0; i < bombsVectLength; i++)
 	{
@@ -57,6 +67,7 @@ void LevelManagerC::update(DWORD milliseconds)
 
 	explodeBombs();
 	destroyVanishingBombsAE();
+	destroyFadingBlocks();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -75,6 +86,18 @@ void LevelManagerC::addToExplodingBombs(BombC& bomb)
 void LevelManagerC::addToVanishingBombsAE(BombAEC * bombAE)
 {
 	mVanishingBombsAEVect.push_back(bombAE);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::addToFadingBlocks(FadingSoftBlockC * softBlock)
+{
+	mFadingSoftBlocksVect.push_back(softBlock);
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::addToDestroyedBlocks(FadingSoftBlockC * softBlock)
+{
+	mDestroyedSoftBlocksVect.push_back(softBlock);
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -142,13 +165,20 @@ void LevelManagerC::createBombAE(BombC & bomb)
 	bool topIsDone = false;
 	bool bottomIsDone = false;
 
-	while (tempRange < bomb.getRange())
+	while (tempRange <= bomb.getRange())
 	{
 		// right
 		if (!rightIsDone)
 		{
 			tempTile.x += tempRange;
-			mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Horizontal)));
+			if (tempRange<bomb.getRange())
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Horizontal);
+			}
+			else
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Right);
+			}
 		}
 
 		// left
@@ -156,7 +186,14 @@ void LevelManagerC::createBombAE(BombC & bomb)
 		{
 			tempTile = centerTile;
 			tempTile.x -= tempRange;
-			mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Horizontal)));
+			if (tempRange < bomb.getRange())
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Horizontal);
+			}
+			else
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Left);
+			}
 		}
 
 		// top
@@ -164,7 +201,14 @@ void LevelManagerC::createBombAE(BombC & bomb)
 		{
 			tempTile = centerTile;
 			tempTile.y += tempRange;
-			mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Vertical)));
+			if (tempRange < bomb.getRange())
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Vertical);
+			}
+			else
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Top);
+			}
 		}
 
 		// bottom
@@ -172,35 +216,43 @@ void LevelManagerC::createBombAE(BombC & bomb)
 		{
 			tempTile = centerTile;
 			tempTile.y -= tempRange;
-			mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Vertical)));
+			if (tempRange < bomb.getRange())
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Vertical);
+			}
+			else
+			{
+				handleBombAEResult(bomb, tempTile, &rightIsDone, BombAEType_t::Bottom);
+			}
 		}
 
 		tempRange++;
 	}
+}
 
-	if (!rightIsDone)
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::handleBombAEResult(BombC& bomb, TileCoor_t & tile, bool * done, BombAEType_t bombAEType)
+{
+	uint32_t spriteIndex = mCurrentMap->blocksLayer[tile.x][tile.y];
+	if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::solidBlock || spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
 	{
-		tempTile = centerTile;
-		tempTile.x += tempRange;
-		mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Right)));
+		*done = true;
+
+		if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
+		{
+			mFadingSoftBlocksVect.push_back(new FadingSoftBlockC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tile)));
+			mCurrentMap->blocksLayer[tile.x][tile.y] = (uint32_t)SpriteIndicesInMap_t::none;
+		}
 	}
-	if (!leftIsDone)
+	else
 	{
-		tempTile = centerTile;
-		tempTile.x -= tempRange;
-		mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Left)));
-	}
-	if (!topIsDone)
-	{
-		tempTile = centerTile;
-		tempTile.y += tempRange;
-		mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Top)));
-	}
-	if (!bottomIsDone)
-	{
-		tempTile = centerTile;
-		tempTile.y -= tempRange;
-		mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tempTile), bomb.getAfterEffectAnimation(BombAEType_t::Bottom)));
+		mBombsAEVect.push_back(new BombAEC(CollisionManagerC::GetInstance()->getPositionFromTileCoor(tile), 
+										   bomb.getAfterEffectAnimation(bombAEType)));
+
+		//if (hitBomb)
+		//{
+		//	explodebomb
+		//}
 	}
 }
 
@@ -227,6 +279,32 @@ void LevelManagerC::destroyVanishingBombsAE()
 			}
 		}
 		mVanishingBombsAEVect.clear();
+	}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+void LevelManagerC::destroyFadingBlocks()
+{
+	if (!mDestroyedSoftBlocksVect.empty())
+	{
+		uint16_t destroyedSoftBlocksVectLength = (uint16_t)mDestroyedSoftBlocksVect.size();
+
+		for (uint16_t i = 0; i < destroyedSoftBlocksVectLength; i++)
+		{
+			uint16_t fadingSoftBlocksVectLength = (uint16_t)mFadingSoftBlocksVect.size();
+			for (uint16_t j = 0; j < fadingSoftBlocksVectLength; i++)
+			{
+				if (mFadingSoftBlocksVect[j] == mDestroyedSoftBlocksVect[i])
+				{
+					mFadingSoftBlocksVect.erase(mFadingSoftBlocksVect.begin() + j);
+
+					FadingSoftBlockC* temp = mDestroyedSoftBlocksVect[i];
+					delete temp;
+					break;
+				}
+			}
+		}
+		mDestroyedSoftBlocksVect.clear();
 	}
 }
 

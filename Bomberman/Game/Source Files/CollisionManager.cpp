@@ -1,7 +1,8 @@
 #include "CollisionManager.h"
 
 CollisionManagerC* CollisionManagerC::sInstance = nullptr;
-const uint32_t CollisionManagerC::sMargin = 3; // collision margin with the blocks
+const int16_t CollisionManagerC::sMarginForBlocksCol = 3; // collision margin with the blocks
+const int16_t CollisionManagerC::sMarginForBombAECol = 8; // collision margin with the bombAE
 
 //---------------------------------------------------------------------------------------------------------------------
 CollisionManagerC * CollisionManagerC::CreateInstance()
@@ -39,7 +40,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 		uint32_t spriteIndex = mCurrentMap->blocksLayer[targetTile.x][targetTile.y];
 		if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::solidBlock || spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
 		{
-			colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
+			colliding = boxCollision(position, getPositionFromTileCoor(targetTile), sMarginForBlocksCol);
 		}
 	}
 	else
@@ -81,7 +82,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 			uint32_t spriteIndex = mCurrentMap->blocksLayer[targetTile.x][targetTile.y];
 			if (spriteIndex == (uint32_t)SpriteIndicesInMap_t::solidBlock || spriteIndex == (uint32_t)SpriteIndicesInMap_t::softBlock)
 			{
-				colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
+				colliding = boxCollision(position, getPositionFromTileCoor(targetTile), sMarginForBlocksCol);
 				if (colliding)
 				{
 					break;
@@ -119,7 +120,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBombs(const Coord2D & positio
 		TileCoor_t bombTile = getTileCoorFromPosition(bombsVect[i].getPosition());
 		if (bombTile.x == targetTile.x && bombTile.y == targetTile.y)
 		{
-			colliding = boxCollision(position, getPositionFromTileCoor(targetTile));
+			colliding = boxCollision(position, getPositionFromTileCoor(targetTile), sMarginForBlocksCol);
 			break;
 		}
 	}
@@ -135,7 +136,7 @@ bool CollisionManagerC::checkCharacterCollisionWithBombsAE(const Coord2D & posit
 	for (uint16_t i = 0; i < vectLength; i++)
 	{
 		BombAEC bombAE = *bombsAEVect[i];
-		colliding = boxCollision(position, bombAE.getPosition());
+		colliding = boxCollision(position, bombAE.getPosition(), sMarginForBombAECol);
 
 		if (colliding)
 		{
@@ -147,12 +148,12 @@ bool CollisionManagerC::checkCharacterCollisionWithBombsAE(const Coord2D & posit
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-bool CollisionManagerC::boxCollision(const Coord2D & source, const Coord2D & target)
+bool CollisionManagerC::boxCollision(const Coord2D & source, const Coord2D & target, int16_t toleranceMargin)
 {
-	return source.x + sMargin < target.x + mCurrentMap->tileWidth &&
-		source.x - sMargin + mCurrentMap->tileWidth > target.x &&
-		source.y - sMargin > target.y - mCurrentMap->tileHeight &&
-		source.y + sMargin - mCurrentMap->tileHeight < target.y;
+	return source.x + toleranceMargin < target.x + mCurrentMap->tileWidth &&
+		source.x - toleranceMargin + mCurrentMap->tileWidth > target.x &&
+		source.y - toleranceMargin > target.y - mCurrentMap->tileHeight &&
+		source.y + toleranceMargin - mCurrentMap->tileHeight < target.y;
 }
 
 //---------------------------------------------------------------------------------------------------------------------

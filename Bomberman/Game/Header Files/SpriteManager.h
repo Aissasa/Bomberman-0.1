@@ -31,6 +31,7 @@ enum class BasicMapLayer
 	Blocks
 };
 
+
 class SpriteManagerC
 {
 public:
@@ -45,9 +46,7 @@ public:
 
 	Map_t* getMap();
 	Animation_t* getAnimations(SpriteSheetType_t spshType);
-	void addPlayerToRender(const Sprite_t* sprite, Coord2D pos);
-	void addBombToRender(const Sprite_t* sprite, Coord2D pos);
-	void addBombAEToRender(const Sprite_t* sprite, Coord2D pos);
+	void addToRender(RenderableSpriteType_t type, const Sprite_t* sprite, Coord2D pos);
 
 private:
 	static SpriteManagerC *sInstance;
@@ -69,19 +68,17 @@ private:
 
 	Map_t mCurrentMap;
 
-	Renderable_Sprite_Vect_t mPlayerRenderableSprite;
+	Renderable_Sprite_Vect_t mPlayerRenderableSpritesVect; // note replace render enemies and player with render char where u pass an enum
 	Renderable_Sprite_Vect_t mBombsRenderableSpritesVect;
 	Renderable_Sprite_Vect_t mBombsAERenderableSpritesVect;
+	Renderable_Sprite_Vect_t mFadingSoftBlocksRenderableSpritesVect;
 
 	DWORD mLastUpdateTime;
 	DWORD mCurrentTime;
 
 	void renderBasicMap();
 	void renderItems();
-	void renderPlayer(); // note replace render enemies and player with render char where u pass an enum
-	// void render enemies
-	void renderBombs();
-	void renderBombsAE();
+	void renderObject(Renderable_Sprite_Vect_t& vect, SpriteSheet_t& spriteSheet);
 	void renderBasicMapTile(const TileCoor_t& tile, BasicMapLayer mapLayer);
 	void renderCharacter(const Sprite_t* spriteToRender, const Coord2D& position);
 	void renderSingleSprite(const Sprite_t& sprite, Coord2D pos);
