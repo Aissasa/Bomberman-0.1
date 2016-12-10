@@ -35,7 +35,6 @@
     <ClInclude Include="Game\Header Files\RenderingDataStructures.h" />
     <ClInclude Include="Game\Header Files\SpriteManager.h" />
     <ClInclude Include="Game\Header Files\SpriteSheetParser.h" />
-    <ClInclude Include="Game\Header Files\stateManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Sources Files\openGLFramework.cpp" />
@@ -57,7 +56,6 @@
     <ClCompile Include="Game\Source Files\ShapeDraw.cpp" />
     <ClCompile Include="Game\Source Files\SpriteManager.cpp" />
     <ClCompile Include="Game\Source Files\SpriteSheetParser.cpp" />
-    <ClCompile Include="Game\Source Files\stateManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F1CEE8A8-86A5-4EC9-8D31-A7E529EE4363}</ProjectGuid>

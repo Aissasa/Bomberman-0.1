@@ -6,6 +6,7 @@
 
 #define FADING_BLOCK_ANIMATION_TIME 50
 
+//---------------------------------------------------------------------------------------------------------------------
 class FadingSoftBlockC
 {
 public:
@@ -28,5 +29,6 @@ private:
 
 };
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef std::vector<FadingSoftBlockC> Fading_SoftBlock_Vect_t;
 typedef std::vector<FadingSoftBlockC*> Fading_SoftBlock_Ptr_Vect_t;

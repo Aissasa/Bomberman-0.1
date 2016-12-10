@@ -6,6 +6,7 @@
 
 #define BOMB_AE_ANIMATION_TIME 50
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef enum class BombAEType
 {
 	Bottom,
@@ -18,6 +19,7 @@ typedef enum class BombAEType
 
 }BombAEType_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 class BombAEC
 {
 public:
@@ -40,5 +42,6 @@ private:
 
 };
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef std::vector<BombAEC> Bombs_AE_Vect_t;
 typedef std::vector<BombAEC*> Bombs_AE_Ptr_Vect_t;

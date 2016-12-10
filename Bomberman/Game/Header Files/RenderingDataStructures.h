@@ -52,6 +52,7 @@ typedef struct SpriteSheet
 
 }SpriteSheet_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef enum class RenderableSpriteType
 {
 	Player,
@@ -61,6 +62,5 @@ typedef enum class RenderableSpriteType
 
 }RenderableSpriteType_t;
 
-
-
+//---------------------------------------------------------------------------------------------------------------------
 typedef std::vector<RenderableSprite_t> Renderable_Sprite_Vect_t;

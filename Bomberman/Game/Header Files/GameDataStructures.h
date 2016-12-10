@@ -3,7 +3,7 @@
 #include "baseTypes.h"
 #include <vector>
 
-// NOTE ADD THIS TO EACH ANIM OR BETTER, EACH FRAME
+// NOTE ADD THIS TO EACH ANIM (in json)
 #define ANIMATIONS_TIME 100 
 
 typedef struct TileCoor
@@ -43,9 +43,11 @@ typedef struct Map
 
 }Map_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef std::vector<Coord2D> Coord2D_Vect_t;
 typedef std::vector<TileCoor_t> TileCoor_Vect_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef enum class SpriteSheetType
 {
 	Barom,

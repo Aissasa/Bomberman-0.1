@@ -84,9 +84,6 @@
     <ClInclude Include="Game\Header Files\SpriteManager.h">
       <Filter>Game\Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Header Files\stateManager.h">
-      <Filter>Game\Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Header Files\MapParser.h">
       <Filter>Game\Header Files\Parsers</Filter>
     </ClInclude>
@@ -141,9 +138,6 @@
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\SpriteManager.cpp">
-      <Filter>Game\Source Files\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Source Files\stateManager.cpp">
       <Filter>Game\Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Game\Source Files\SpriteSheetParser.cpp">

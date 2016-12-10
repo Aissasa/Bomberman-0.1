@@ -7,6 +7,7 @@
 #include "BombAE.h"
 #include "FadingSoftBlock.h"
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef enum class LevelStates
 {
 	Play,
@@ -15,7 +16,7 @@ typedef enum class LevelStates
 	Failed
 }LevelStates_t;
 
-
+//---------------------------------------------------------------------------------------------------------------------
 class LevelManagerC
 {
 public:
@@ -60,7 +61,6 @@ private:
 
 	Fading_SoftBlock_Ptr_Vect_t mFadingSoftBlocksVect;
 	Fading_SoftBlock_Ptr_Vect_t mDestroyedSoftBlocksVect;
-	// todo add enemies
 
 	void handlePlayState(DWORD milliseconds);
 	void handlePauseState(DWORD milliseconds);

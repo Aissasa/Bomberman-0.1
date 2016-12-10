@@ -11,11 +11,9 @@
 #include "random.h"
 #include "openGLStuff.h"
 #include "game.h"
-#include "StateManager.h"
 #include "InputManager.h"
 #include "SpriteManager.h"
 #include "LevelManager.h"
-//#include "Utils.h"
 
 // Declarations
 const char8_t CGame::mGameTitle[]="Bomberman 0.1";
@@ -44,16 +42,12 @@ CGame *CGame::CreateInstance()
 //---------------------------------------------------------------------------------------------------------------------
 void CGame::init()
 {
-	//StateManagerC::CreateInstance();
-	//UtilsC::CreateInstance();
 	InputManagerC::CreateInstance();
 	SpriteManagerC::CreateInstance();
 	LevelManagerC::CreateInstance();
 
 	SpriteManagerC::GetInstance()->init();
 	LevelManagerC::GetInstance()->init(SpriteManagerC::GetInstance()->getMap());
-
-	//StateManagerC::GetInstance()->setState(StateManagerC::HALF_BALLS_FILLED);
 
 }
 
@@ -74,11 +68,9 @@ void CGame::DrawScene(void)
 //---------------------------------------------------------------------------------------------------------------------
 void CGame::shutdown()
 {
-	//StateManagerC::GetInstance()->shutdown();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 void CGame::DestroyGame(void)
 {
-	//delete StateManagerC::GetInstance();	
 }

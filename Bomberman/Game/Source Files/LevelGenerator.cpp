@@ -27,7 +27,7 @@ void LevelGeneratorC::generateLevel(Map_t* basicMap)
 //---------------------------------------------------------------------------------------------------------------------
 void LevelGeneratorC::generateSoftBlocks(Map_t* basicMap)
 {
-	// starts for bottom left
+	// starts from bottom left
 	uint32_t softBlocksNum = getRangedRandom(MIN_NUM_SOFT_BLOCKS, MAX_NUM_SOFT_BLOCKS);
 
 	while (softBlocksNum > 0)

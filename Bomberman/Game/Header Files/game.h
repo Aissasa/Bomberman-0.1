@@ -22,7 +22,5 @@ private:
 	static CGame *sInstance;
 	CGame() {};
 
-	// todo add 2 enums
-	// screens: title(image from spritesheet and a press space bar to start), stage, game(stops update?)
-	// gamestate: works with game screen state, has play, pause(and player dying??)
+	// todo add screens enum: title(image from spritesheet and a press space bar to start), stage, game
 };

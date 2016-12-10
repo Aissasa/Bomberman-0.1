@@ -34,7 +34,6 @@ bool CollisionManagerC::checkCharacterCollisionWithBlocks(const Coord2D & positi
 	if (direction.x != 0 && direction.y != 0)
 	{
 		// note add cutting corners logic here
-
 		TileCoor_t targetTile = charTile;
 		targetTile.x += (int16_t)direction.x;
 		targetTile.y += (int16_t)direction.y;
@@ -109,8 +108,6 @@ bool CollisionManagerC::checkCharacterCollisionWithBombs(const Coord2D & positio
 
 	Coord2D center = { position.x + mCurrentMap->tileWidth / 2, position.y + mCurrentMap->tileHeight / 2 };
 	TileCoor_t charTile = getTileCoorFromPosition(center);
-
-	// note add cutting corners logic here
 
 	TileCoor_t targetTile = charTile;
 	targetTile.x += (int16_t)direction.x;

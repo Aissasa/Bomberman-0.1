@@ -8,6 +8,7 @@
 #define BOMB_EXPLOSION_TIME 3000
 #define BOMB_ANIMATION_TIME 300
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef struct AfterEffectsAnimations
 {
 	Animation_t* bottomAE;
@@ -20,6 +21,7 @@ typedef struct AfterEffectsAnimations
 
 }AfterEffectsAnimations_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 class BombC
 {
 public:
@@ -58,6 +60,7 @@ private:
 
 };
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef std::vector<BombC> Bombs_Vect_t;
 typedef std::vector<BombC*> Bombs_Ptr_Vect_t;
 

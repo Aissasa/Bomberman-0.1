@@ -7,6 +7,7 @@
 #define SPEED_INCREMENT 0.4
 #define BTN_COOLDOWN_TIMER 200
 
+//---------------------------------------------------------------------------------------------------------------------
 typedef struct Perks
 {
 	uint16_t bombUp;
@@ -19,6 +20,7 @@ typedef struct Perks
 
 }Perks_t;
 
+//---------------------------------------------------------------------------------------------------------------------
 class PlayerC : public CharacterC
 {
 public:
